@@ -1,3 +1,93 @@
+@import url('https://fonts.googleapis.com/css2?family=Inika:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Imprima&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+  html {
+    font-family: 'Imprima', system-ui, sans-serif;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  a,
+  span,
+  button {
+    font-family: 'Inika', system-ui, serif;
+    font-weight: 700;
+  }
+}
+
+/* fond - PAGE CONNEXION */
+.fondLogin {
+  background: url(/img/cosmos-flowers.jpg);
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  width: 100vw;
+  height: 100vh;
+}
+
+/* Dégradé rose/blanc (derrière le logo) - HEADER */
+.bg-logo {
+  background: radial-gradient(circle, transparent 15%, #fee7ef 40%);
+}
+
+/* flèche - SLIDER */
+.slick-prev,
+.slick-next {
+  z-index: 1;
+  width: 30px;
+  height: 30px;
+}
+
+.slick-prev:before,
+.slick-next:before {
+  content: none;
+}
+
+/* checkbox - BOUTIQUE */
+span::before {
+  border-color: #c20e4d !important;
+  /* border-width: 1px !important; */
+}
+
+span {
+  border-width: 1px !important;
+}
+
+*,
+::before,
+::after {
+  box-sizing: border-box;
+  border-width: 0;
+  border-style: solid;
+  border-color: transparent;
+}
+
+.label-checkbox {
+  font-family: 'Imprima', system-ui, sans-serif;
+  font-weight: 400;
+}
+
+/* filtre - BOUTIQUE */
+.title-filtre {
+  font-family: 'Inika', system-ui, serif;
+  font-weight: 700;
+  font-size: 1.25rem;
+  text-transform: uppercase;
+}
+
+/* pagination - BOUTIQUE */
+.border-default {
+  border-color: #ffffff !important;
+  border-width: 1px;
+  font-family: 'Imprima', system-ui, sans-serif;
+  font-weight: 400;
+}
