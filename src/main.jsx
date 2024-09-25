@@ -2,9 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { NextUIProvider } from '@nextui-org/react';
 import App from './App';
-// import Connexion from './components/Connexion';
-// import Boutique from './components/sous-page/Boutique';
-// import Home from './components/sous-page/Home';
+import Accueil from './pages/Accueil/accueil';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import './index.css';
 
@@ -15,18 +13,10 @@ const router = createBrowserRouter([
     children: [
       {
         path: '/',
-        element: <Home />,
-      },
-      {
-        path: 'boutique',
-        element: <Boutique />,
-      },
+        element: <Accueil />,
+      }
     ],
-  },
-  {
-    path: '/connexion',
-    element: <Connexion />,
-  },
+  }
 ]);
 
 ReactDOM.createRoot(document.getElementById('root')).render(

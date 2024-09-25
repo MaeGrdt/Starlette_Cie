@@ -11,9 +11,10 @@ import {
 import caddie from "../../assets/icons/icon-caddie.svg";
 import React, { useState } from "react";
 import { NavLink } from "react-router-dom";
+import './style.css';
 
 export default function Header() {
-  const [activeItem, setActiveItem] = useState("Home");
+  const [activeItem, setActiveItem] = useState("Accueil");
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
 
   const handleItemClick = (item) => {
@@ -24,7 +25,7 @@ export default function Header() {
     `text-black ${activeItem === item ? "text-danger-600" : ""}`;
 
   const menuItems = [
-    "Home",
+    "Accueil",
     "Nos Produits",
     "Actualités",
     "Points de ventes",
@@ -64,13 +65,13 @@ export default function Header() {
           />
         </NavbarContent>
         <NavbarContent>
-          <NavbarItem isActive={activeItem === "Home"}>
+          <NavbarItem isActive={activeItem === "Accueil"}>
             <NavLink
               to="/"
               color="secondary"
               href="#"
-              onClick={() => handleItemClick("Home")}
-              className={linkClasses("Home")}
+              onClick={() => handleItemClick("Accueil")}
+              className={linkClasses("Accueil")}
             >
               Accueil
             </NavLink>

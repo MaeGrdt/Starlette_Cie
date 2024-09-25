@@ -1,0 +1,12 @@
+/* flèche - SLIDER */
+.slick-prev,
+.slick-next {
+  z-index: 1;
+  width: 30px;
+  height: 30px;
+}
+
+.slick-prev:before,
+.slick-next:before {
+  content: none;
+}
