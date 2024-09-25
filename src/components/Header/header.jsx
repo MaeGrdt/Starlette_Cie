@@ -1,21 +1,19 @@
-import {
-  Navbar,
-  NavbarContent,
-  NavbarItem,
-  Link,
-  Image,
-  NavbarMenuToggle,
-  NavbarMenu,
-  NavbarMenuItem,
-} from "@nextui-org/react";
+import {Navbar, NavbarMenuToggle, NavbarMenu, NavbarMenuItem, NavbarContent, NavbarItem, Link, Image} from "@nextui-org/react";
 import caddie from "../../assets/icons/icon-caddie.svg";
 import React, { useState } from "react";
 import { NavLink } from "react-router-dom";
 import './style.css';
 
 export default function Header() {
+const menuItems = [
+    "Accueil",
+    "Nos Produits",
+    "Actualités",
+    "Points de ventes",
+    "Boutiques",
+  ];
+
   const [activeItem, setActiveItem] = useState("Accueil");
-  const [isMenuOpen, setIsMenuOpen] = React.useState(false);
 
   const handleItemClick = (item) => {
     setActiveItem(item);
@@ -23,14 +21,6 @@ export default function Header() {
 
   const linkClasses = (item) =>
     `text-black ${activeItem === item ? "text-danger-600" : ""}`;
-
-  const menuItems = [
-    "Accueil",
-    "Nos Produits",
-    "Actualités",
-    "Points de ventes",
-    "Boutiques",
-  ];
 
   return (
     <>
@@ -57,14 +47,11 @@ export default function Header() {
           className="md:w-24 lg:w-64 my-2"
         />
       </div>
-      <Navbar className="bg-danger-100" onMenuOpenChange={setIsMenuOpen}>
-        <NavbarContent>
-          <NavbarMenuToggle
-            aria-label={isMenuOpen ? "Close menu" : "Open menu"}
-            className="sm:hidden"
-          />
+      <Navbar className="bg-danger-100" disableAnimation isBordered>
+        <NavbarContent className="sm:hidden" justify="start">
+          <NavbarMenuToggle />
         </NavbarContent>
-        <NavbarContent>
+        <NavbarContent className="hidden sm:flex sm:max-md:w-full" justify="center">
           <NavbarItem isActive={activeItem === "Accueil"}>
             <NavLink
               to="/"
@@ -117,21 +104,17 @@ export default function Header() {
             </NavLink>
           </NavbarItem>
         </NavbarContent>
-        <NavbarContent></NavbarContent>
         <NavbarMenu>
           {menuItems.map((item, index) => (
             <NavbarMenuItem key={`${item}-${index}`}>
               <Link
-                color={
-                  index === 2
-                    ? "primary"
-                    : index === menuItems.length - 1
-                    ? "danger"
-                    : "foreground"
-                }
                 className="w-full"
+                color={
+                  item === activeItem ? "danger" : "foreground"  // L'élément actif devient "danger", les autres "foreground"
+                }
                 href="#"
                 size="lg"
+                onClick={() => setActiveItem(item)} // Mise à jour de l'élément actif lors du clic
               >
                 {item}
               </Link>
