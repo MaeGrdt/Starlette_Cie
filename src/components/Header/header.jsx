@@ -44,14 +44,14 @@ const menuItems = [
         <Image
           alt="logo"
           src="./logo(1).png"
-          className="md:w-24 lg:w-64 my-2"
+          className="w-36 md:w-24 lg:w-64 my-2"
         />
       </div>
       <Navbar className="bg-danger-100" disableAnimation isBordered>
         <NavbarContent className="sm:hidden" justify="start">
           <NavbarMenuToggle />
         </NavbarContent>
-        <NavbarContent className="hidden sm:flex sm:max-md:w-full" justify="center">
+        <NavbarContent className="hidden sm:flex w-full" justify="center">
           <NavbarItem isActive={activeItem === "Accueil"}>
             <NavLink
               to="/"

@@ -15,32 +15,67 @@ export default function SliderHome() {
     autoplaySpeed: 10000,
     nextArrow: <NextArrow />,
     prevArrow: <PrevArrow />,
-    // responsive: [
-    //   {
-    //     breakpoint: 1024,
-    //     settings: {
-    //       slidesToShow: 2,
-    //       slidesToScroll: 1,
-    //       infinite: true,
-    //       dots: true,
-    //     },
-    //   },
-    //   {
-    //     breakpoint: 600,
-    //     settings: {
-    //       slidesToShow: 2,
-    //       slidesToScroll: 1,
-    //       initialSlide: 2,
-    //     },
-    //   },
-    //   {
-    //     breakpoint: 480,
-    //     settings: {
-    //       slidesToShow: 1,
-    //       slidesToScroll: 1,
-    //     },
-    //   },
-    // ],
+    responsive: [
+      {
+        breakpoint: 1595,
+        settings: {
+          centerPadding: "400px",
+          slidesToShow: 1,
+          slidesToScroll: 1,
+        },
+      },
+      {
+        breakpoint: 1400,
+        settings: {
+          centerPadding: "380px",
+          slidesToShow: 1,
+          slidesToScroll: 1,
+          dots: true,
+        },
+      },
+      {
+        breakpoint: 1300,
+        settings: {
+          centerPadding: "350px",
+          slidesToShow: 1,
+          slidesToScroll: 1,
+          dots: true,
+        },
+      },
+      {
+        breakpoint: 1200,
+        settings: {
+          centerPadding: "100px",
+          slidesToShow: 1,
+          slidesToScroll: 1,
+          dots: true,
+        },
+      },
+      {
+        breakpoint: 700,
+        settings: {
+          centerPadding: "70px",
+          slidesToShow: 1,
+          slidesToScroll: 1,
+        },
+      },
+      {
+        breakpoint: 600,
+        settings: {
+          centerPadding: "50px",
+          slidesToShow: 1,
+          slidesToScroll: 1,
+        },
+      },
+      {
+        breakpoint: 480,
+        settings: {
+          centerPadding: "0px",
+          slidesToShow: 1,
+          slidesToScroll: 1,
+        },
+      },
+    ],
   };
   return (
     <>

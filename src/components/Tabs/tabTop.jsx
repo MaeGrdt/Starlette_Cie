@@ -48,7 +48,7 @@ export default function TabTop() {
   ];
 
   return (
-    <div className="grid grid-cols-8 gap-4">
+    <div className="grid m-2 sm:grid-cols-8 sm:gap-4">
       <div className="flex w-full flex-col col-start-3 col-span-4">
         <Tabs
           aria-label="Options"
@@ -74,7 +74,7 @@ export default function TabTop() {
             }
           >
             <Card className="bg-danger-50 p-3">
-              <div className="gap-2 grid grid-cols-2 sm:grid-cols-6">
+              <div className="gap-2 grid grid-cols-2 lg:grid-cols-5 2xl:grid-cols-6">
                 {list.map((item, index) => (
                   <Card
                     shadow="sm"

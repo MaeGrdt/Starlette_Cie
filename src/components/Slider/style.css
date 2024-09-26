@@ -10,3 +10,39 @@
 .slick-next:before {
   content: none;
 }
+
+@media (min-width: 1501px) and (max-width: 1600px) {
+  .slick-prev {
+    z-index: 1;
+    left: 25% !important;
+  }
+
+  .slick-next {
+    z-index: 1;
+    right: 25% !important;
+  }
+}
+
+@media (min-width: 1201px) and (max-width: 1500px) {
+  .slick-prev {
+    z-index: 1;
+    left: 27% !important;
+  }
+
+  .slick-next {
+    z-index: 1;
+    right: 27% !important;
+  }
+}
+
+@media (max-width: 1200px) {
+  .slick-prev {
+    z-index: 1;
+    left: 10% !important;
+  }
+
+  .slick-next {
+    z-index: 1;
+    right: 10% !important;
+  }
+}

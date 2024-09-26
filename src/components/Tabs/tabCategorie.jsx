@@ -6,7 +6,7 @@ export default function TabCategorie() {
   const [selected, setSelected] = React.useState("produits");
 
   return (
-    <div className="grid grid-cols-8 gap-4">
+    <div className="grid m-2 sm:grid-cols-8 sm:gap-4">
       <div className="flex w-full flex-col col-start-3 col-span-4 mb-3">
         <Tabs
           aria-label="Options"

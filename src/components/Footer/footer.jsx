@@ -14,7 +14,7 @@ export default function Footer() {
 
         <div className="bg-default-900 py-1 px-8 ">
           <Divider className="bg-danger-200 my-4 mx-8 w-95" />
-          <div className="grid grid-cols-3 items-start px-5 mx-8">
+          <div className="grid sm:grid-cols-3 sm:items-start sm:px-5 sm:mx-8">
             {/* Première div à gauche */}
             <div className="flex justify-start">
               <Link href="#" className="text-white">
