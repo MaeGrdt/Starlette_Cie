@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom/client';
 import { NextUIProvider } from '@nextui-org/react';
 import App from './App';
 import Accueil from './pages/Accueil/accueil';
+import Boutique from './pages/Boutique/boutique';
 import Connexion from './pages/Connexion/connexion';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import './index.css';
@@ -15,7 +16,11 @@ const router = createBrowserRouter([
       {
         path: '/',
         element: <Accueil />,
-      }
+      },
+      {
+        path: 'boutique',
+        element: <Boutique />,
+      },
     ],
   },
   {
