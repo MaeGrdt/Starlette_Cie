@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Tabs,
   Tab,
@@ -13,6 +13,9 @@ import PaginationShop from "../../components/Pagination/pagination";
 
 export default function Boutique() {
   const [selected, setSelected] = React.useState("shop");
+  
+  // État pour afficher ou masquer les filtres en dessous de la taille lg
+  const [showFilters, setShowFilters] = useState(false);
 
   const list = [
     {
@@ -99,7 +102,7 @@ export default function Boutique() {
 
   return (
     <>
-      <div className="grid grid-cols-8 gap-4 mt-4">
+      <div className="grid m-2 mt-4 lg:grid-cols-8 lg:gap-4">
         <div className="flex w-full flex-col col-start-3 col-span-4">
           <Tabs
             aria-label="Options"
@@ -125,16 +128,37 @@ export default function Boutique() {
               }
             >
               <Card className="bg-danger-50 p-3">
-                <div className="flex gap-2">
-                  <div className="w-3/4">
-                    <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 pr-2">
+                {/* Flexbox pour changer la disposition selon la taille de l'écran */}
+                <div className="flex flex-col lg:flex-row gap-2">
+                  {/* Bouton pour afficher les filtres sur les écrans plus petits que lg */}
+                  <div className="lg:hidden w-full">
+                    <button
+                      className="bg-danger-600 text-white px-4 py-2 rounded-lg w-full mb-1"
+                      onClick={() => setShowFilters(!showFilters)}
+                    >
+                      {showFilters ? "Masquer les filtres" : "Afficher les filtres"}
+                    </button>
+                  </div>
+
+                  {/* Filtres: cachés par défaut sur petits écrans, affichés sur écrans plus larges */}
+                  <div
+                    className={`w-full lg:w-1/4 order-1 lg:order-2 transition-all duration-300 ${
+                      showFilters ? "block" : "hidden"
+                    } lg:block flex flex-col items-center`}
+                  >
+                    <Filters />
+                  </div>
+
+                  {/* Liste des produits */}
+                  <div className="w-full lg:w-3/4 order-2 lg:order-1">
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4 pr-2">
                       {list.map((item, index) => (
                         <Card
                           shadow="sm"
                           key={index}
                           isPressable
                           onPress={() => console.log("item pressed")}
-                          className="mb-4 mr-3"
+                          className="mb-4"
                         >
                           <CardBody className="overflow-visible p-0">
                             <Image
@@ -156,18 +180,16 @@ export default function Boutique() {
                         </Card>
                       ))}
                     </div>
-                    <div className="mt-8 flex justify-center">
-                      <PaginationShop />
-                    </div>
                   </div>
-                  <div className="w-1/4 flex gap-2 items-center justify-end">
-                    <div>
-                      <Filters />
-                    </div>
-                  </div>
+                </div>
+
+                {/* Pagination: Toujours en bas */}
+                <div className="mt-8 flex justify-center">
+                  <PaginationShop />
                 </div>
               </Card>
             </Tab>
+
             <Tab
               key="disabled"
               isDisabled
