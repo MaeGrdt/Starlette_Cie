@@ -1,0 +1,4 @@
+/* Dégradé rose/blanc (derrière le logo) - HEADER */
+.bg-logo {
+  background: radial-gradient(circle, transparent 15%, #fee7ef 40%);
+}
