@@ -9,7 +9,7 @@ export default function Filters() {
   return (
     <>
       {/* filtre type */}
-      <div className='w-60 mb-8'>
+      <div className='w-60 lg:w-full mb-8'>
         {/* title */}
         <div className='bg-white p-3 rounded-xl text-center mb-2'>
           <p className='title-filtre'>Type de produit</p>
@@ -49,7 +49,7 @@ export default function Filters() {
         </div>
       </div>
       {/* filtre catégorie */}
-      <div className='w-60 mb-8'>
+      <div className='w-60 lg:w-full mb-8'>
         {/* title */}
         <div className='bg-white p-3 rounded-xl text-center mb-2'>
           <p className='title-filtre'>Catégorie</p>
@@ -104,7 +104,7 @@ export default function Filters() {
         </div>
       </div>
       {/* filtre note moyenne */}
-      <div className='w-60 mb-8'>
+      <div className='w-60 lg:w-full mb-8'>
         {/* title */}
         <div className='bg-white p-3 rounded-xl text-center mb-2'>
           <p className='title-filtre'>Note moyenne</p>
@@ -178,7 +178,7 @@ export default function Filters() {
         </div>
       </div>
       {/* filtre affinage */}
-      <div className='w-60 mb-8'>
+      <div className='w-60 lg:w-full mb-8'>
         {/* title */}
         <div className='bg-white p-3 rounded-xl text-center mb-2'>
           <p className='title-filtre'>Affinage</p>
@@ -218,7 +218,7 @@ export default function Filters() {
         </div>
       </div>
       {/* filtre enrobage */}
-      <div className='w-60 mb-8'>
+      <div className='w-60 lg:w-full mb-8'>
         {/* title */}
         <div className='bg-white p-3 rounded-xl text-center mb-2'>
           <p className='title-filtre'>Enrobage</p>

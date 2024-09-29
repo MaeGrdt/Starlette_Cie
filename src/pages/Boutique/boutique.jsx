@@ -102,8 +102,8 @@ export default function Boutique() {
 
   return (
     <>
-      <div className="grid m-2 mt-4 lg:grid-cols-8 lg:gap-4">
-        <div className="flex w-full flex-col col-start-3 col-span-4">
+      <div className="grid m-2 mt-4 lg:grid-cols-6 xl:grid-cols-8 lg:gap-4">
+        <div className="flex w-full flex-col lg:col-start-2 xl:col-start-3 col-span-4 ">
           <Tabs
             aria-label="Options"
             variant="underlined"
