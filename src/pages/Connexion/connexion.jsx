@@ -19,13 +19,13 @@ export default function Connexion() {
   return (
     <>
       <div className='fondLogin overflow-hidden'>
-        <div className='flex justify-center place-items-center w-full h-full'>
+        <div className='flex justify-center w-full h-full md:place-items-center'>
           <div className='absolute top-0 left-0'>
             <NavLink to='/'>
               <img src={home} alt='icon caddie' className='w-11' />
             </NavLink>{' '}
           </div>
-          <Card className='max-w-full w-1/4 h-3/4 bg-danger-100 p-2 '>
+          <Card className='max-w-full m-10 md:w-2/5 xl:w-1/4 md:h-3/4 bg-danger-100 p-2 '>
             <CardBody className='overflow-hidden'>
               <Tabs
                 fullWidth
@@ -36,7 +36,7 @@ export default function Connexion() {
                 selectedKey={selected}
                 onSelectionChange={setSelected}
               >
-                <Tab key='sign-up' title='Inscription' className='py-6 m-0.5'>
+                <Tab key='sign-up' title='Inscription' color='danger' className='py-6 m-0.5'>
                   <form className='flex flex-col gap-4'>
                     <Input
                       isRequired
@@ -88,11 +88,7 @@ export default function Connexion() {
                   </form>
                 </Tab>
                 <Tab
-                  key='login'
-                  title='Connexion'
-                  color='danger'
-                  className='py-6 m-0.5'
-                >
+                  key='login' title='Connexion' color='danger' className='py-6 m-0.5'>
                   <form className='flex flex-col gap-4 h-[300px]'>
                     <Input
                       isRequired
