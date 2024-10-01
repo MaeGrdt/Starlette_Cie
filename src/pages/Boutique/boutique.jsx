@@ -13,8 +13,6 @@ import PaginationShop from "../../components/Pagination/pagination";
 
 export default function Boutique() {
   const [selected, setSelected] = React.useState("shop");
-  
-  // État pour afficher ou masquer les filtres en dessous de la taille lg
   const [showFilters, setShowFilters] = useState(false);
 
   const list = [
