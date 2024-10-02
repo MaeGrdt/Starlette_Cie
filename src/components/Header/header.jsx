@@ -1,16 +1,20 @@
-import {Navbar, NavbarMenuToggle, NavbarMenu, NavbarMenuItem, NavbarContent, NavbarItem, Link, Image} from "@nextui-org/react";
+import {
+  Navbar,
+  NavbarMenuToggle,
+  NavbarMenu,
+  NavbarMenuItem,
+  NavbarContent,
+  NavbarItem,
+  Link,
+  Image,
+} from "@nextui-org/react";
 import caddie from "../../assets/icons/icon-caddie.svg";
-import React, { useState } from "react";
+import { useState } from "react";
 import { NavLink } from "react-router-dom";
-import './style.css';
+import "./style.css";
 
 export default function Header() {
-const menuItems = [
-    "Accueil",
-    "Actualités",
-    "Points de ventes",
-    "Boutiques",
-  ];
+  const menuItems = ["Accueil", "Actualités", "Points de ventes", "Boutiques"];
 
   const [activeItem, setActiveItem] = useState("Accueil");
 
@@ -99,7 +103,7 @@ const menuItems = [
               <Link
                 className="w-full"
                 color={
-                  item === activeItem ? "danger" : "foreground"  // L'élément actif devient "danger", les autres "foreground"
+                  item === activeItem ? "danger" : "foreground" // L'élément actif devient "danger", les autres "foreground"
                 }
                 href="#"
                 size="lg"
