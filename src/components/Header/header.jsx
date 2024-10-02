@@ -7,7 +7,6 @@ import './style.css';
 export default function Header() {
 const menuItems = [
     "Accueil",
-    "Nos Produits",
     "Actualités",
     "Points de ventes",
     "Boutiques",
@@ -63,16 +62,6 @@ const menuItems = [
               Accueil
             </NavLink>
           </NavbarItem>
-          <NavbarItem isActive={activeItem === "Nos produits"}>
-            <NavLink
-              to="#"
-              href="#"
-              onClick={() => handleItemClick("Nos produits")}
-              className={linkClasses("Nos produits")}
-            >
-              Nos produits
-            </NavLink>
-          </NavbarItem>
           <NavbarItem isActive={activeItem === "Actualités"}>
             <NavLink
               to="#"
@@ -85,7 +74,7 @@ const menuItems = [
           </NavbarItem>
           <NavbarItem isActive={activeItem === "Points de ventes"}>
             <NavLink
-              to="#"
+              to="point-de-vente"
               href="#"
               onClick={() => handleItemClick("Points de ventes")}
               className={linkClasses("Points de ventes")}
