@@ -68,7 +68,7 @@ export default function Header() {
           </NavbarItem>
           <NavbarItem isActive={activeItem === "Actualités"}>
             <NavLink
-              to="#"
+              to="actualite"
               href="#"
               onClick={() => handleItemClick("Actualités")}
               className={linkClasses("Actualités")}

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { Tabs, Tab, Card, Accordion, AccordionItem } from "@nextui-org/react";
 import stars from "../../assets/icons/icon-star.svg";
 import repere from "../../assets/icons/icon-repère.svg";
@@ -6,8 +6,6 @@ import "./style.css";
 
 export default function Point_Vente() {
   const [selected, setSelected] = React.useState("pdv");
-  const defaultContent =
-    "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.";
 
   const list = [
     {

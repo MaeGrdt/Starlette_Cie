@@ -1,40 +1,45 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import { NextUIProvider } from '@nextui-org/react';
-import App from './App';
-import Accueil from './pages/Accueil/accueil';
-import Point_Vente from './pages/Point_vente/point_vente';
-import Boutique from './pages/Boutique/boutique';
-import Connexion from './pages/Connexion/connexion';
-import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-import './index.css';
+import React from "react";
+import ReactDOM from "react-dom/client";
+import { NextUIProvider } from "@nextui-org/react";
+import App from "./App";
+import Accueil from "./pages/Accueil/accueil";
+import Actualite from "./pages/Actualité/actualite";
+import Point_Vente from "./pages/Point_vente/point_vente";
+import Boutique from "./pages/Boutique/boutique";
+import Connexion from "./pages/Connexion/connexion";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import "./index.css";
 
 const router = createBrowserRouter([
   {
-    path: '/',
+    path: "/",
     element: <App />,
     children: [
       {
-        path: '/',
+        path: "/",
         element: <Accueil />,
       },
       {
-        path: 'point-de-vente',
+        path: "actualite",
+        element: <Actualite />,
+      },
+      {
+        path: "point-de-vente",
         element: <Point_Vente />,
       },
       {
-        path: 'boutique',
+        path: "boutique",
         element: <Boutique />,
       },
     ],
   },
   {
-    path: '/connexion',
+    path: "/connexion",
     element: <Connexion />,
   },
 ]);
 
-ReactDOM.createRoot(document.getElementById('root')).render(
+ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
     <NextUIProvider>
       <RouterProvider router={router} />
