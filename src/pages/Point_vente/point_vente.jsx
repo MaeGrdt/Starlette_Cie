@@ -18,17 +18,8 @@ export default function Point_Vente() {
       heure_debut: "00h",
       heure_fin: "00h",
       cadence: "",
-      iframe: (
-        <iframe
-          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d89608.73569356793!2d4.210752964664659!3d45.42399806436747!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47f5abff0dcfe415%3A0x631b2db87635756!2sSaint-%C3%89tienne!5e0!3m2!1sfr!2sfr!4v1727804425263!5m2!1sfr!2sfr"
-          width="600"
-          height="450"
-          style={{ border: 0 }}
-          allowFullScreen=""
-          loading="lazy"
-          referrerPolicy="no-referrer-when-downgrade"
-        ></iframe>
-      ),
+      iframe:
+        "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d22391.1154241932!2d4.368594625588792!3d45.45188424097701!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47f5ac0f0c4df8c9%3A0x1c093cb3290e5a30!2s42000%20Saint-%C3%89tienne!5e0!3m2!1sfr!2sfr",
     },
     {
       title: "Nom du PDV",
@@ -38,17 +29,8 @@ export default function Point_Vente() {
       heure_debut: "00h",
       heure_fin: "00h",
       cadence: "Semaine impaire",
-      iframe: (
-        <iframe
-          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d10732.698790081104!2d5.270915820864433!3d47.73926503731266!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47ed3c39d57c9a77%3A0xa0a5fbc41b76460!2sPrangey%2C%2052190%20Villegusien-le-Lac!5e0!3m2!1sfr!2sfr!4v1727804392319!5m2!1sfr!2sfr"
-          width="600"
-          height="450"
-          style={{ border: 0 }}
-          allowFullScreen=""
-          loading="lazy"
-          referrerPolicy="no-referrer-when-downgrade"
-        ></iframe>
-      ),
+      iframe:
+        "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d10732.698790081104!2d5.270915820864433!3d47.73926503731266!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47ed3c39d57c9a77%3A0xa0a5fbc41b76460!2sPrangey%2C%2052190%20Villegusien-le-Lac!5e0!3m2!1sfr!2sfr",
     },
     {
       title: "Nom du PDV",
@@ -58,17 +40,8 @@ export default function Point_Vente() {
       heure_debut: "00h",
       heure_fin: "00h",
       cadence: "Semaine paire",
-      iframe: (
-        <iframe
-          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d21461.27695450301!2d5.231596264208912!3d47.74925864929872!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47ed3da33b4a01f1%3A0x60cd0998e911caff!2sBaissey!5e0!3m2!1sfr!2sfr!4v1727804408639!5m2!1sfr!2sfr"
-          width="600"
-          height="450"
-          style={{ border: 0 }}
-          allowFullScreen=""
-          loading="lazy"
-          referrerPolicy="no-referrer-when-downgrade"
-        ></iframe>
-      ),
+      iframe:
+        "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d21461.27695450301!2d5.231596264208912!3d47.74925864929872!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47ed3da33b4a01f1%3A0x60cd0998e911caff!2sBaissey!5e0!3m2!1sfr!2sfr",
     },
     {
       title: "Nom du PDV",
@@ -78,17 +51,8 @@ export default function Point_Vente() {
       heure_debut: "00h",
       heure_fin: "00h",
       cadence: "Chaque semaine",
-      iframe: (
-        <iframe
-          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d42847.46403673502!2d3.9358194702386395!3d47.840242299384485!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47ee700781d1c6d7%3A0xf24d5542d53475e!2s89700%20Tonnerre!5e0!3m2!1sfr!2sfr!4v1727804458335!5m2!1sfr!2sfr"
-          width="600"
-          height="450"
-          style={{ border: 0 }}
-          allowFullScreen=""
-          loading="lazy"
-          referrerPolicy="no-referrer-when-downgrade"
-        ></iframe>
-      ),
+      iframe:
+        "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d42847.46403673502!2d3.9358194702386395!3d47.840242299384485!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x47ee700781d1c6d7%3A0xf24d5542d53475e!2s89700%20Tonnerre!5e0!3m2!1sfr!2sfr",
     },
   ];
 
@@ -142,19 +106,47 @@ export default function Point_Vente() {
                       }
                       className={`border-0 shadow-none my-1`}
                     >
-                      <div className="grid grid-cols-3 gap-2 mx-3">
-                        <div className="col-span-2 ">
+                      <div className="grid grid-cols-1 md:grid-cols-3 gap-2 mx-3">
+                        <div className="md:col-span-2 flex md:block flex-col items-center justify-center text-center md:text-left space-y-3">
                           <p className="mb-5">{item.resume}</p>
-                          <div className="grid grid-rows-2 grid-cols-2 space-y-3">
-                            <p><b>Lieu:</b> {item.lieu}</p>
-                            <p>
-                              <b>Horaires:</b> {item.heure_debut} - {item.heure_fin}
+                          <div className="flex flex-col md:grid md:grid-rows-2 md:grid-cols-2 space-y-3">
+                            <p className="text-custom">
+                              <u>Lieu :</u>
+                              {item.lieu}
                             </p>
-                            <p><b>Jour:</b> {item.jour}</p>
-                            {item.cadence && <p><b>Cadence:</b> {item.cadence}</p>}
+                            <p className="text-custom">
+                              <u>Jour :</u>
+                              {item.jour}
+                            </p>
+                            <p className="text-custom">
+                              <u>Horaires :</u>
+                              <b>
+                                {item.heure_debut} - {item.heure_fin}
+                              </b>
+                            </p>
+                            {item.cadence && (
+                              <p className="text-custom">
+                                <u>Cadence :</u>
+                                <b>{item.cadence}</b>
+                              </p>
+                            )}
                           </div>
                         </div>
-                        <div className="col-start-3">{item.iframe}</div>
+                        <div className="col-span-1 md:col-start-3">
+                          <iframe
+                            src={item.iframe}
+                            width="100%"
+                            height="280rem"
+                            style={{
+                              borderRadius: 10,
+                              borderWidth: 4,
+                              borderColor: "#fee7ef",
+                            }}
+                            allowFullScreen=""
+                            loading="lazy"
+                            referrerPolicy="no-referrer-when-downgrade"
+                          ></iframe>
+                        </div>
                       </div>
                     </AccordionItem>
                   ))}
