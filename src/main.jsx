@@ -6,6 +6,7 @@ import Accueil from "./pages/Accueil/accueil";
 import Actualite from "./pages/Actualité/actualite";
 import Point_Vente from "./pages/Point_vente/point_vente";
 import Boutique from "./pages/Boutique/boutique";
+import Mentions from "./pages/Footers-page/mentions_etc";
 import Connexion from "./pages/Connexion/connexion";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import "./index.css";
@@ -30,6 +31,10 @@ const router = createBrowserRouter([
       {
         path: "boutique",
         element: <Boutique />,
+      },
+      {
+        path: "/mentions_politique",
+        element: <Mentions />,
       },
     ],
   },
