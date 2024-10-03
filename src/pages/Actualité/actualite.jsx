@@ -71,10 +71,10 @@ export default function Actualite() {
                     <Card className="border-none mb-3 md:mx-2" key={index}>
                       <CardBody>
                         <div className="2xl:grid 2xl:grid-cols-3">
-                          <div className="relative">
+                          <div className="relative md:max-lg:flex md:max-lg:justify-center">
                             <Image
                               alt={item.nom}
-                              className="object-cover size-80 mb-5 md:size-64 2xl:mb-0 2xl:size-36"
+                              className="object-cover mx-auto size-80 mb-5 md:size-64 2xl:mb-0 xl:size-36"
                               shadow="sm"
                               src={item.image}
                             />
@@ -82,7 +82,7 @@ export default function Actualite() {
 
                           <div className="col-span-2">
                             <div className="flex justify-between items-start">
-                              <div className="flex flex-col">
+                              <div className="flex flex-col 2xl:ml-2">
                                 <h3 className="mb-1 md:mb-0">{item.nom}</h3>
                                 <p>{item.resume}</p>
                                 <a
