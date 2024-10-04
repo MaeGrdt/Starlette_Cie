@@ -1,0 +1,16 @@
+p {
+  margin: 1rem 0 1rem 0;
+}
+
+li {
+  margin: 1rem 1rem 1rem 1rem !important;
+}
+
+h3 {
+  margin: 2rem 0 1rem 0.5rem !important;
+}
+
+.article {
+  margin: 0 -1rem 1rem -1rem !important;
+  text-wrap: wrap !important;
+}
