@@ -60,8 +60,11 @@ export default function Confi_cookie() {
                   https://starlette-and-cie.com
                 </span>{" "}
                 sur la collecte, l’utilisation et la protection de leurs données
-                personnelles conformément au Règlement Général sur la Protection
-                des Données (RGPD).
+                personnelles conformément au{" "}
+                <span className="underline italic">
+                  Règlement Général sur la Protection des Données (RGPD)
+                </span>
+                .
               </p>
 
               <h3 className="text-lg">
@@ -70,13 +73,18 @@ export default function Confi_cookie() {
               <p>
                 Le responsable du traitement des données personnelles collectées
                 sur le site est :<br />
-                <br />
-                [Nom de la fromagère ou de la boutique], située à [adresse de la
-                boutique].
-                <br /> Numéro SIRET : [numéro SIRET]
-                <br />
-                Adresse email : [email de contact]
-                <br /> Téléphone : [numéro de téléphone]
+                Ludivine Girardot, située au 38 rue de la gueurge 52190 Prangey.
+                <ul className="list-disc">
+                  <li>
+                    <u>Numéro SIRET :</u> 911774016
+                  </li>
+                  <li>
+                    <u>Adresse email :</u> lgirardot1998@gmail.com
+                  </li>
+                  <li>
+                    <u>Téléphone :</u> +33 6 31 41 23 36
+                  </li>
+                </ul>
               </p>
 
               <h3 className="text-lg">2. Données collectées</h3>
@@ -86,18 +94,25 @@ export default function Confi_cookie() {
                 notamment :
                 <ul className="list-disc">
                   <li>
-                    Données d'identité : Nom, prénom, adresse postale, email,
-                    numéro de téléphone.
+                    <u>Données d'identité :</u>
+                    <br />
+                    Nom, prénom, email, numéro de téléphone.
                   </li>
                   <li>
-                    Données de connexion : Adresse IP, type de navigateur, temps
-                    de connexion.
-                  </li>
-                  <li>
-                    Données de paiement : Les informations relatives aux moyens
-                    de paiement ne sont jamais stockées directement par notre
-                    site. Elles sont traitées par notre prestataire de paiement
-                    sécurisé.
+                    <u>Données de paiement :</u>
+                    <br />
+                    Les informations relatives aux moyens de paiement peuvent
+                    être stockées par notre site, mais{" "}
+                    <span className="underline italic">
+                      elles sont traitées via un protocole sécurisé
+                    </span>
+                    . Nous utilisons les services de{" "}
+                    <span className="underline italic">Stripe</span> pour
+                    garantir la{" "}
+                    <span className="underline italic">
+                      sécurité des transactions et protéger vos données
+                    </span>
+                    .
                   </li>
                 </ul>
               </p>
@@ -108,22 +123,16 @@ export default function Confi_cookie() {
                 utilisées pour :
                 <ul className="list-disc">
                   <li>
-                    Gestion des commandes : Traitement des commandes, livraison
-                    des produits, suivi des achats.
+                    <u>Gestion des commandes :</u>
+                    <br />
+                    Traitement des commandes, remise des produits au point de
+                    vente, suivi des achats.
                   </li>
                   <li>
-                    Service client : Répondre aux demandes des utilisateurs
-                    (questions, réclamations, retours).
-                  </li>
-                  <li>
-                    Amélioration de l’expérience utilisateur : Analyse des
-                    statistiques de navigation pour améliorer les services
-                    proposés.
-                  </li>
-                  <li>
-                    Marketing et newsletter (si applicable) : Envoi de
-                    communications commerciales aux utilisateurs ayant donné
-                    leur consentement.
+                    <u>Service client :</u>
+                    <br />
+                    Répondre aux demandes des clients (questions, réclamations,
+                    retours).
                   </li>
                 </ul>
               </p>
@@ -160,7 +169,8 @@ export default function Confi_cookie() {
                     transactions.
                   </li>
                   <li>
-                    Transporteurs : Pour assurer la livraison des commandes.
+                    Transporteurs : Pour assurer la remise des produits au point
+                    de vente.
                   </li>
                   <li>
                     Hébergement du site : Les données peuvent être hébergées par

@@ -111,7 +111,11 @@ export default function Mentions() {
               title={
                 <div className="flex items-center space-x-2 px-2">
                   <img src={stars} alt="icon d'étoiles" className="w-6" />
-                  <span>Infos Paiements</span>
+                  <span>
+                    Infos
+                    <br />
+                    Paiements
+                  </span>
                 </div>
               }
             >

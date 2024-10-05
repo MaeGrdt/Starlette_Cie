@@ -8,9 +8,18 @@ li {
 
 h3 {
   margin: 2rem 0 1rem 0.5rem !important;
+  color: #c20e4d !important;
+}
+
+.h3_expec{
+    margin: 0rem 0 1rem 0.5rem !important;
 }
 
 .article {
   margin: 0 -1rem 1rem -1rem !important;
   text-wrap: wrap !important;
+}
+
+a {
+  color: #c20e4d !important;
 }
