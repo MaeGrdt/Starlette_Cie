@@ -11,7 +11,7 @@ import {
 } from "@nextui-org/react";
 import home from "../../assets/icons/icon-accueil.svg";
 import { NavLink } from "react-router-dom";
-import axios from "axios"; // Import Axios
+import axios from "axios";
 import "./style.css";
 
 export default function Connexion() {
@@ -20,7 +20,7 @@ export default function Connexion() {
     nom: "",
     prenom: "",
     email: "",
-    password: "",
+    mot_de_passe: "",
   });
   const [error, setError] = useState(null);
 
@@ -32,15 +32,17 @@ export default function Connexion() {
 
   // Soumettre le formulaire d'inscription
   const handleSubmit = async (e) => {
-    e.preventDefault(); // Empêche le rechargement de la page
+    e.preventDefault();
     try {
-      // Envoi des données au backend API Platform
-      const response = await axios.post("http://localhost:8000/api/register", {
-        nom: formData.nom,
-        prenom: formData.prenom,
-        email: formData.email,
-        password: formData.password,
-      });
+      const response = await axios.post(
+        "http://localhost:8000/api/utilisateurs",
+        {
+          nom: formData.nom,
+          prenom: formData.prenom,
+          email: formData.email,
+          mot_de_passe: formData.password,
+        }
+      );
 
       console.log("Inscription réussie:", response.data);
       // Optionnel : rediriger ou afficher un message de succès
@@ -110,11 +112,11 @@ export default function Connexion() {
                     <Input
                       isRequired
                       size="lg"
-                      label="Password"
+                      label="Mot de passe"
                       placeholder="Entrez votre mot de passe"
                       type="password"
-                      name="password"
-                      value={formData.password}
+                      name="mot_de_passe"
+                      value={formData.mot_de_passe}
                       onChange={handleInputChange}
                     />
                     {error && <p className="text-danger-600">{error}</p>}
@@ -157,7 +159,7 @@ export default function Connexion() {
                     <Input
                       isRequired
                       size="lg"
-                      label="Password"
+                      label="Mot de passe"
                       placeholder="Entrez votre mot de passe"
                       type="password"
                     />
