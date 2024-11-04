@@ -2,3 +2,11 @@
 .bg-logo {
   background: radial-gradient(circle, transparent 15%, #fee7ef 40%);
 }
+
+.avatar {
+  background-color: transparent !important;
+  width: 12rem !important;
+  height: 12rem !important;
+  right: 28%;
+  top: 13.5% !important;
+}
