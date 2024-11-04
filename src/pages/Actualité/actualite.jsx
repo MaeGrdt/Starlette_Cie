@@ -1,7 +1,6 @@
 import React from "react";
 import { Tabs, Tab, Card, CardBody, Image } from "@nextui-org/react";
 import stars from "../../assets/icons/icon-star.svg";
-import "./style.css";
 
 export default function Actualite() {
   const [selected, setSelected] = React.useState("actu");
