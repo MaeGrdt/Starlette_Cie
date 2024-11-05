@@ -14,6 +14,8 @@ import "./style_vente.css";
 export default function Point_Vente() {
   const [selected, setSelected] = React.useState("pdv");
 
+  const token = localStorage.getItem("token");
+
   const list = [
     {
       title: "Nom du PDV",
@@ -136,9 +138,11 @@ export default function Point_Vente() {
                               </p>
                             )}
                           </div>
-                          <Button className="btn-color">
-                            Choisir ce point de vente
-                          </Button>
+                          {token && (
+                            <Button className="btn-color">
+                              Choisir ce point de vente
+                            </Button>
+                          )}
                         </div>
                         <div className="col-span-1 md:col-start-3">
                           <iframe
