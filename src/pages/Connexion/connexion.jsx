@@ -12,7 +12,7 @@ import {
 import home from "../../assets/icons/icon-accueil.svg";
 import { NavLink, useNavigate } from "react-router-dom";
 import axios from "axios";
-import "./style.css";
+import "./style_conn.css";
 
 export default function Connexion() {
   const [selected, setSelected] = useState("login");

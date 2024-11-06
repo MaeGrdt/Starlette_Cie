@@ -9,6 +9,7 @@ import Boutique from "./pages/Boutique/boutique";
 import Connexion from "./pages/Connexion/connexion";
 import Profile from "./pages/Profile/profile";
 import Dashboard from "./pages/Dashboard/dashboard";
+import Page_404 from "./pages/error404/page404";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import "./index.css";
 
@@ -42,14 +43,8 @@ const router = createBrowserRouter([
   {
     path: "/profile",
     element: <Profile />,
-    // children: [
-    //   {
-    //     path: "/",
-    //     element: <Accueil />,
-    //   }
-    // ],
   },
-    {
+  {
     path: "/dashboard",
     element: <Dashboard />,
     // children: [
@@ -58,6 +53,14 @@ const router = createBrowserRouter([
     //     element: <Accueil />,
     //   }
     // ],
+  },
+  {
+    path: "/error_404",
+    element: <Page_404 />,
+  },
+  {
+    path: "*",
+    element: <Page_404 />,
   },
 ]);
 

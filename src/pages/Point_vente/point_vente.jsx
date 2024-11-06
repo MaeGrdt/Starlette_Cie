@@ -1,11 +1,20 @@
 import React from "react";
-import { Tabs, Tab, Card, Accordion, AccordionItem } from "@nextui-org/react";
+import {
+  Tabs,
+  Tab,
+  Card,
+  Accordion,
+  AccordionItem,
+  Button,
+} from "@nextui-org/react";
 import stars from "../../assets/icons/icon-star.svg";
 import repere from "../../assets/icons/icon-repère.svg";
-import "./style.css";
+import "./style_vente.css";
 
 export default function Point_Vente() {
   const [selected, setSelected] = React.useState("pdv");
+
+  const token = localStorage.getItem("token");
 
   const list = [
     {
@@ -129,6 +138,11 @@ export default function Point_Vente() {
                               </p>
                             )}
                           </div>
+                          {token && (
+                            <Button className="btn-color">
+                              Choisir ce point de vente
+                            </Button>
+                          )}
                         </div>
                         <div className="col-span-1 md:col-start-3">
                           <iframe

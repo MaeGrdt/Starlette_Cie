@@ -6,8 +6,20 @@ import {
   CardBody,
   Image,
   CardFooter,
+  Button,
 } from "@nextui-org/react";
 import stars from "../../assets/icons/icon-star.svg";
+import like from "../../assets/icons/icon-étoile(vide).svg";
+import stars5 from "../../assets/icons/5-stars.svg";
+import stars45 from "../../assets/icons/4.5-stars.svg";
+import stars4 from "../../assets/icons/4-stars.svg";
+import stars35 from "../../assets/icons/3.5-stars.svg";
+import stars3 from "../../assets/icons/3-stars.svg";
+import stars25 from "../../assets/icons/2.5-stars.svg";
+import stars2 from "../../assets/icons/2-stars.svg";
+import stars15 from "../../assets/icons/1.5-stars.svg";
+import stars1 from "../../assets/icons/1-stars.svg";
+import stars05 from "../../assets/icons/0.5-stars.svg";
 import Filters from "../../components/Filter/filters";
 import Vache from "../../assets/badges/vache.png";
 import Mixte from "../../assets/badges/mixte2.png";
@@ -21,6 +33,21 @@ export default function Boutique() {
   const [produits, setProduits] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  
+  const [token, setToken] = useState(null);
+
+  const starsMap = {
+    5.0: stars5,
+    4.5: stars45,
+    4.0: stars4,
+    3.5: stars35,
+    3.0: stars3,
+    2.5: stars25,
+    2.0: stars2,
+    1.5: stars15,
+    1.0: stars1,
+    0.5: stars05,
+  };
 
   // Filtres
   const [filteredTypes, setFilteredTypes] = useState([]);
@@ -33,6 +60,9 @@ export default function Boutique() {
   const itemsPerPage = 16;
 
   useEffect(() => {
+    const storedToken = localStorage.getItem("token");
+    setToken(storedToken);
+    
     const fetchProduits = async () => {
       try {
         const response = await axios.get("http://localhost:8000/api/produits");
@@ -241,6 +271,22 @@ export default function Boutique() {
                                     : "../img/default.jpg"
                                 }
                               />
+                              
+                              {/* Afficher le bouton seulement si le token est présent */}
+                            {token && (
+                              <Button
+                                isIconOnly
+                                radius="full"
+                                variant="light"
+                                className="absolute top-0 right-0 z-10"
+                              >
+                                <img
+                                  src={like}
+                                  alt="icon étoile"
+                                  className="size-7"
+                                />
+                              </Button>
+                            )}
 
                               {badgeSrc && (
                                 <Image
@@ -254,6 +300,13 @@ export default function Boutique() {
                               <p>
                                 {item.nom}
                                 <br />
+                                {item.note_moy ? (
+                                  <img
+                                    src={starsMap[item.note_moy]}
+                                    alt={`${item.note_moy} étoiles`}
+                                    className="w-20 my-1 mx-auto"
+                                  />
+                                ) : null}{" "}
                                 <b className="text-danger-400">{item.prix} €</b>
                               </p>
                             </CardFooter>

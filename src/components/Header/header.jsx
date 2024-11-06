@@ -9,14 +9,20 @@ import {
   Image,
 } from "@nextui-org/react";
 import caddie from "../../assets/icons/icon-caddie.svg";
-import { useState } from "react";
+import compte from "../../assets/icons/icon-compte.svg";
+import { useState, useEffect } from "react";
 import { NavLink } from "react-router-dom";
 import "./style.css";
 
 export default function Header() {
   const menuItems = ["Accueil", "Actualités", "Points de ventes", "Boutiques"];
-
   const [activeItem, setActiveItem] = useState("Accueil");
+  const [token, setToken] = useState(null);
+
+  useEffect(() => {
+    const storedToken = localStorage.getItem("token");
+    setToken(storedToken);
+  }, []);
 
   const handleItemClick = (item) => {
     setActiveItem(item);
@@ -29,13 +35,23 @@ export default function Header() {
     <>
       <Navbar className="bg-default-100">
         <NavbarContent justify="start">
-          <NavbarItem>
-            <NavLink to="/connexion" className="text-black">
-              Connexion
-            </NavLink>
-          </NavbarItem>
+          {!token && (
+            <NavbarItem>
+              <NavLink to="/connexion" className="text-black">
+                Connexion
+              </NavLink>
+            </NavbarItem>
+          )}
         </NavbarContent>
         <NavbarContent justify="end">
+          {/* Afficher le lien compte seulement s'il y a un token */}
+          {token && (
+            <NavbarItem>
+              <NavLink to="/profile">
+                <img src={compte} alt="icon compte" />
+              </NavLink>
+            </NavbarItem>
+          )}
           <NavbarItem>
             <Link href="#">
               <img src={caddie} alt="icon caddie" />
@@ -102,9 +118,7 @@ export default function Header() {
             <NavbarMenuItem key={`${item}-${index}`}>
               <Link
                 className="w-full"
-                color={
-                  item === activeItem ? "danger" : "foreground" // L'élément actif devient "danger", les autres "foreground"
-                }
+                color={item === activeItem ? "danger" : "foreground"} // L'élément actif devient "danger", les autres "foreground"
                 href="#"
                 size="lg"
                 onClick={() => setActiveItem(item)} // Mise à jour de l'élément actif lors du clic

@@ -9,3 +9,11 @@ u {
   vertical-align: middle;
   margin-right: 4%;
 }
+
+.btn-color {
+  background-color: #c20e4d !important;
+  color: white !important;
+  width: 35% !important;
+  margin-left: 30% !important;
+  margin-top: 17% !important;
+}
