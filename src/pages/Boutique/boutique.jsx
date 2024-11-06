@@ -9,6 +9,9 @@ import {
 } from "@nextui-org/react";
 import stars from "../../assets/icons/icon-star.svg";
 import Filters from "../../components/Filter/filters";
+import Vache from "../../assets/badges/vache.png";
+import Mixte from "../../assets/badges/mixte2.png";
+import Chèvre from "../../assets/badges/chèvre.png";
 import PaginationShop from "../../components/Pagination/pagination";
 import axios from "axios";
 
@@ -19,6 +22,70 @@ export default function Boutique() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  // Filtre
+  const [selectedType, setSelectedType] = useState([]); // Pour le type de produit
+  const [selectedCategorie, setSelectedCategorie] = useState([]); // Pour la catégorie
+  const [selectedNote, setSelectedNote] = useState([]); // Pour la note
+  const [selectedAffinage, setSelectedAffinage] = useState([]); // Pour l'affinage
+  const [selectedEnrobage, setSelectedEnrobage] = useState([]); // Pour l'enrobage
+
+  const getFilteredProducts = () => {
+    return produits.filter((produit) => {
+      // Filtrer par type de produit
+      const typeMatch =
+        selectedType.length === 0 ||
+        selectedType.includes(produit.type_produit);
+
+      // Filtrer par catégorie
+      const categorieMatch =
+        selectedCategorie.length === 0 ||
+        selectedCategorie.includes(produit.categorie);
+
+      // Filtrer par note
+      const noteMatch =
+        selectedNote.length === 0 || selectedNote.includes(produit.note);
+
+      // Filtrer par affinage
+      const affinageMatch =
+        selectedAffinage.length === 0 ||
+        selectedAffinage.includes(produit.produitsVariants[0]?.affinage);
+
+      // Filtrer par enrobage
+      const enrobageMatch =
+        selectedEnrobage.length === 0 ||
+        produit.produitsVariants.some((variant) =>
+          selectedEnrobage.includes(variant.id_enrobage.nom_enrobage)
+        ); // Vérifiez tous les variants
+
+      return (
+        typeMatch &&
+        categorieMatch &&
+        noteMatch &&
+        affinageMatch &&
+        enrobageMatch
+      );
+    });
+  };
+
+  const filteredProducts = getFilteredProducts();
+
+  // Calcul des comptes pour chaque filtre
+  const calculateCounts = (field) => {
+    return produits.reduce((acc, produit) => {
+      const value = produit[field];
+      if (acc[value]) acc[value]++;
+      else acc[value] = 1;
+      return acc;
+    }, {});
+  };
+
+  const typeCounts = calculateCounts("type_produit");
+  const categorieCounts = calculateCounts("categorie");
+  const noteCounts = calculateCounts("note");
+  const affinageCounts = calculateCounts("affinage");
+  const enrobageCounts = calculateCounts("enrobage");
+
+  // Pagination
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
   const itemsPerPage = 16;
@@ -37,11 +104,10 @@ export default function Boutique() {
             categorie: produit.categorie,
             type_produit: produit.type_produit,
             date_ajout: produit.date_ajout,
-            // Récupérer le prix du premier variant (ajustez selon vos besoins)
             prix:
               produit.produitsVariants.length > 0
-                ? produit.produitsVariants[0].prix
-                : 0,
+                ? (produit.produitsVariants[0].prix / 100).toFixed(2)
+                : "0.00",
             id_image: produit.id_image,
           }));
 
@@ -132,42 +198,84 @@ export default function Boutique() {
                       showFilters ? "block" : "hidden"
                     } lg:block flex flex-col items-center`}
                   >
-                    <Filters />
+                    <Filters
+                      selectedType={selectedType}
+                      setSelectedType={setSelectedType}
+                      selectedCategorie={selectedCategorie}
+                      setSelectedCategorie={setSelectedCategorie}
+                      selectedNote={selectedNote}
+                      setSelectedNote={setSelectedNote}
+                      selectedAffinage={selectedAffinage}
+                      setSelectedAffinage={setSelectedAffinage}
+                      selectedEnrobage={selectedEnrobage}
+                      setSelectedEnrobage={setSelectedEnrobage}
+                      typeCounts={typeCounts}
+                      categorieCounts={categorieCounts}
+                      noteCounts={noteCounts}
+                      affinageCounts={affinageCounts}
+                      enrobageCounts={enrobageCounts}
+                    />
                   </div>
 
                   <div className="w-full lg:w-3/4 order-2 lg:order-1">
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-4 pr-2">
-                      {currentProducts.map((item, index) => (
-                        <Card
-                          shadow="sm"
-                          key={index}
-                          isPressable
-                          onPress={() => console.log("produit pressé")}
-                          className="mb-4"
-                        >
-                          <CardBody className="overflow-visible p-0">
-                            <Image
-                              shadow="sm"
-                              radius="lg"
-                              width="100%"
-                              alt={item.nom}
-                              className="w-full object-cover h-[140px]"
-                              src={
-                                item.id_image
-                                  ? item.id_image.url
-                                  : "../img/default.jpg"
-                              }
-                            />
-                          </CardBody>
-                          <CardFooter className="text-small justify-center">
-                            <p>
-                              {item.nom}
-                              <br />
-                              <b className="text-danger-400">{item.prix}€</b>
-                            </p>
-                          </CardFooter>
-                        </Card>
-                      ))}
+                      {filteredProducts.map((item, index) => {
+                        // Déterminer le badge en fonction de la catégorie
+                        let badgeSrc;
+                        let taille;
+                        if (item.categorie === "vache") {
+                          badgeSrc = Vache;
+                          taille = 40;
+                        } else if (item.categorie === "mixte") {
+                          badgeSrc = Mixte;
+                          taille = 80;
+                        } else if (item.categorie === "chèvre") {
+                          badgeSrc = Chèvre;
+                          taille = 40;
+                        } else {
+                          badgeSrc = null;
+                        }
+
+                        return (
+                          <Card
+                            shadow="sm"
+                            key={index}
+                            isPressable
+                            onPress={() => console.log("produit pressé")}
+                            className="mb-4"
+                          >
+                            <CardBody className="overflow-visible p-0">
+                              <Image
+                                shadow="sm"
+                                radius="lg"
+                                width="100%"
+                                alt={item.nom}
+                                className="w-full object-cover h-[140px]"
+                                src={
+                                  item.id_image
+                                    ? item.id_image.url
+                                    : "../img/default.jpg"
+                                }
+                              />
+
+                              {badgeSrc && (
+                                <Image
+                                  width={taille}
+                                  src={badgeSrc}
+                                  className="z-20 absolute bottom-0 left-0 m-1"
+                                />
+                              )}
+                            </CardBody>
+                            <CardFooter className="text-small justify-center">
+                              <p>
+                                {item.nom}
+                                <br />
+                                <b className="text-danger-400">{item.prix}€</b>
+                              </p>
+                            </CardFooter>
+                          </Card>
+                        );
+                      })}
                     </div>
                   </div>
                 </div>
