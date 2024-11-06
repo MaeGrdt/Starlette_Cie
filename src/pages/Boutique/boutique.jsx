@@ -22,68 +22,10 @@ export default function Boutique() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // Filtre
-  const [selectedType, setSelectedType] = useState([]); // Pour le type de produit
-  const [selectedCategorie, setSelectedCategorie] = useState([]); // Pour la catégorie
-  const [selectedNote, setSelectedNote] = useState([]); // Pour la note
-  const [selectedAffinage, setSelectedAffinage] = useState([]); // Pour l'affinage
-  const [selectedEnrobage, setSelectedEnrobage] = useState([]); // Pour l'enrobage
-
-  const getFilteredProducts = () => {
-    return produits.filter((produit) => {
-      // Filtrer par type de produit
-      const typeMatch =
-        selectedType.length === 0 ||
-        selectedType.includes(produit.type_produit);
-
-      // Filtrer par catégorie
-      const categorieMatch =
-        selectedCategorie.length === 0 ||
-        selectedCategorie.includes(produit.categorie);
-
-      // Filtrer par note
-      const noteMatch =
-        selectedNote.length === 0 || selectedNote.includes(produit.note);
-
-      // Filtrer par affinage
-      const affinageMatch =
-        selectedAffinage.length === 0 ||
-        selectedAffinage.includes(produit.produitsVariants[0]?.affinage);
-
-      // Filtrer par enrobage
-      const enrobageMatch =
-        selectedEnrobage.length === 0 ||
-        produit.produitsVariants.some((variant) =>
-          selectedEnrobage.includes(variant.id_enrobage.nom_enrobage)
-        ); // Vérifiez tous les variants
-
-      return (
-        typeMatch &&
-        categorieMatch &&
-        noteMatch &&
-        affinageMatch &&
-        enrobageMatch
-      );
-    });
-  };
-
-  const filteredProducts = getFilteredProducts();
-
-  // Calcul des comptes pour chaque filtre
-  const calculateCounts = (field) => {
-    return produits.reduce((acc, produit) => {
-      const value = produit[field];
-      if (acc[value]) acc[value]++;
-      else acc[value] = 1;
-      return acc;
-    }, {});
-  };
-
-  const typeCounts = calculateCounts("type_produit");
-  const categorieCounts = calculateCounts("categorie");
-  const noteCounts = calculateCounts("note");
-  const affinageCounts = calculateCounts("affinage");
-  const enrobageCounts = calculateCounts("enrobage");
+  // Filtres
+  const [filteredTypes, setFilteredTypes] = useState([]);
+  const [filteredCategories, setFilteredCategories] = useState([]);
+  const [filteredAffinages, setFilteredAffinages] = useState([]);
 
   // Pagination
   const [currentPage, setCurrentPage] = useState(1);
@@ -94,25 +36,39 @@ export default function Boutique() {
     const fetchProduits = async () => {
       try {
         const response = await axios.get("http://localhost:8000/api/produits");
-        console.log(response.data);
 
         if (Array.isArray(response.data.member)) {
-          // Mapper les produits pour extraire les informations nécessaires
-          const produitsWithPrices = response.data.member.map((produit) => ({
-            id: produit.id,
-            nom: produit.nom,
-            categorie: produit.categorie,
-            type_produit: produit.type_produit,
-            date_ajout: produit.date_ajout,
-            prix:
-              produit.produitsVariants.length > 0
-                ? (produit.produitsVariants[0].prix / 100).toFixed(2)
-                : "0.00",
-            id_image: produit.id_image,
-          }));
+          const produitsWithDetails = response.data.member.map((produit) => {
+            const variantsWithDetails = produit.produitsVariants.map(
+              (variant) => ({
+                affinage: variant.affinage ? variant.affinage : " ",
+                enrobage: variant.id_enrobage
+                  ? variant.id_enrobage.nom_enrobage
+                  : "Aucun",
+              })
+            );
 
-          setProduits(produitsWithPrices);
-          setTotalPages(Math.ceil(produitsWithPrices.length / itemsPerPage)); // Calculer le nombre total de pages
+            return {
+              id: produit.id,
+              nom: produit.nom,
+              categorie: produit.categorie,
+              type_produit: produit.type_produit,
+              prix:
+                produit.produitsVariants.length > 0
+                  ? (produit.produitsVariants[0].prix / 100).toFixed(2)
+                  : "0.00",
+              id_image: produit.id_image,
+              variants: variantsWithDetails,
+            };
+          });
+
+          // Trier les produits par nom (ordre alphabétique)
+          const produitsSorted = produitsWithDetails.sort((a, b) =>
+            a.nom.localeCompare(b.nom)
+          );
+
+          setProduits(produitsSorted);
+          setTotalPages(Math.ceil(produitsSorted.length / itemsPerPage));
         } else {
           console.error(
             "Les données récupérées ne contiennent pas un tableau de produits",
@@ -135,23 +91,68 @@ export default function Boutique() {
     fetchProduits();
   }, []);
 
-  if (loading) return <div>Chargement...</div>;
-  if (error) return <div>Erreur : {error}</div>;
+  const handleFilterChange = (filterType, filterValues) => {
+    switch (filterType) {
+      case "type":
+        setFilteredTypes(filterValues);
+        break;
+      case "category":
+        setFilteredCategories(filterValues);
+        break;
+      case "affinage":
+        setFilteredAffinages(filterValues);
+        break;
+      default:
+        break;
+    }
+  };
 
-  // Calculer les produits affichés pour la page actuelle
+  // Filtrage des produits
+  const filteredProducts = produits.filter((produit) => {
+    const matchesType =
+      filteredTypes.length === 0 ||
+      filteredTypes.includes(produit.type_produit);
+
+    const matchesCategory =
+      filteredCategories.length === 0 ||
+      filteredCategories.includes(produit.categorie);
+
+    const matchesAffinage =
+      filteredAffinages.length === 0 ||
+      (Array.isArray(produit.produitsVariants) &&
+        produit.produitsVariants.some((variant) =>
+          filteredAffinages.includes(variant.affinage)
+        ));
+
+    return matchesType && matchesCategory && matchesAffinage;
+  });
+
+  console.log("Données reçues:", filteredProducts);
+
+  // Pagination des produits
   const indexOfLastProduct = currentPage * itemsPerPage;
   const indexOfFirstProduct = indexOfLastProduct - itemsPerPage;
-  const currentProducts = produits.slice(
+  const currentProducts = filteredProducts.slice(
     indexOfFirstProduct,
     indexOfLastProduct
   );
+  const totalProducts = filteredProducts.length;
+  const startProduct = indexOfFirstProduct + 1;
+  const endProduct = Math.min(indexOfLastProduct, totalProducts);
 
-  // Calculer le nombre total de produits
-  const totalProducts = produits.length;
+  // pagination avec les filtres
+  // const indexOfLastProduct = currentPage * itemsPerPage;
+  // const indexOfFirstProduct = indexOfLastProduct - itemsPerPage;
+  // const currentProducts = filteredProducts.slice(
+  //   indexOfFirstProduct,
+  //   indexOfLastProduct
+  // );
+  // const totalProducts = filteredProducts.length;
+  // const startProduct = indexOfFirstProduct + 1;
+  // const endProduct = Math.min(indexOfLastProduct, totalProducts);
 
-  // Calculer l'intervalle affiché
-  const startProduct = indexOfFirstProduct + 1; // +1 pour commencer à 1 au lieu de 0
-  const endProduct = Math.min(indexOfLastProduct, totalProducts); // Pour éviter de dépasser le nombre total de produits
+  if (loading) return <div>Chargement...</div>;
+  if (error) return <div>Erreur : {error}</div>;
 
   return (
     <>
@@ -198,29 +199,12 @@ export default function Boutique() {
                       showFilters ? "block" : "hidden"
                     } lg:block flex flex-col items-center`}
                   >
-                    <Filters
-                      selectedType={selectedType}
-                      setSelectedType={setSelectedType}
-                      selectedCategorie={selectedCategorie}
-                      setSelectedCategorie={setSelectedCategorie}
-                      selectedNote={selectedNote}
-                      setSelectedNote={setSelectedNote}
-                      selectedAffinage={selectedAffinage}
-                      setSelectedAffinage={setSelectedAffinage}
-                      selectedEnrobage={selectedEnrobage}
-                      setSelectedEnrobage={setSelectedEnrobage}
-                      typeCounts={typeCounts}
-                      categorieCounts={categorieCounts}
-                      noteCounts={noteCounts}
-                      affinageCounts={affinageCounts}
-                      enrobageCounts={enrobageCounts}
-                    />
+                    <Filters onFilterChange={handleFilterChange} />
                   </div>
 
                   <div className="w-full lg:w-3/4 order-2 lg:order-1">
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-4 pr-2">
-                      {filteredProducts.map((item, index) => {
-                        // Déterminer le badge en fonction de la catégorie
+                      {currentProducts.map((item, index) => {
                         let badgeSrc;
                         let taille;
                         if (item.categorie === "vache") {
@@ -270,7 +254,7 @@ export default function Boutique() {
                               <p>
                                 {item.nom}
                                 <br />
-                                <b className="text-danger-400">{item.prix}€</b>
+                                <b className="text-danger-400">{item.prix} €</b>
                               </p>
                             </CardFooter>
                           </Card>

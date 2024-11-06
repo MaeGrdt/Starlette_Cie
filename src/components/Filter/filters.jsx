@@ -3,217 +3,371 @@ import stars5 from "../../assets/icons/5-stars.svg";
 import stars4 from "../../assets/icons/4-stars.svg";
 import stars3 from "../../assets/icons/3-stars.svg";
 import stars2 from "../../assets/icons/2-stars.svg";
+import { useState } from "react";
 import "./style.css";
 
-const starImages = {
-  5: stars5,
-  4: stars4,
-  3: stars3,
-  2: stars2,
-};
+export default function Filters({ onFilterChange }) {
+  const [selectedTypes, setSelectedTypes] = useState([]);
+  const [selectedCategories, setSelectedCategories] = useState([]);
+  const [selectedAffinages, setSelectedAffinages] = useState([]);
 
-export default function Filters({
-  selectedType,
-  setSelectedType,
-  selectedCategorie,
-  setSelectedCategorie,
-  selectedNote,
-  setSelectedNote,
-  selectedAffinage,
-  setSelectedAffinage,
-  selectedEnrobage,
-  typeCounts,
-  categorieCounts,
-  noteCounts,
-  affinageCounts,
-  enrobageCounts,
-}) {
-  // Fonction pour cocher/décocher un filtre
-  const handleCheckboxChange = (setter, selectedValues, value) => {
-    if (selectedValues.includes(value)) {
-      setter(selectedValues.filter((item) => item !== value));
-    } else {
-      setter([...selectedValues, value]);
-    }
+  const handleCheckboxChangeType = (type) => {
+    setSelectedTypes((prevSelected) => {
+      const newSelected = prevSelected.includes(type)
+        ? prevSelected.filter((item) => item !== type)
+        : [...prevSelected, type];
+      onFilterChange("type", newSelected);
+      return newSelected;
+    });
   };
+
+  const handleCheckboxChangeCategory = (category) => {
+    setSelectedCategories((prevSelected) => {
+      const newSelected = prevSelected.includes(category)
+        ? prevSelected.filter((item) => item !== category)
+        : [...prevSelected, category];
+      onFilterChange("category", newSelected);
+      return newSelected;
+    });
+  };
+
+  const handleCheckboxChangeAffinage = (affinage) => {
+    setSelectedAffinages((prevSelected) => {
+      const newSelected = prevSelected.includes(affinage)
+        ? prevSelected.filter((item) => item !== affinage)
+        : [...prevSelected, affinage];
+      onFilterChange("affinage", newSelected);
+      return newSelected;
+    });
+  };
+
   return (
     <>
-      {/* Filtre Type de produit */}
+      {/* filtre type */}
       <div className="w-60 lg:w-full mb-8">
         <div className="bg-white p-3 rounded-xl text-center mb-2">
           <p className="title-filtre">Type de produit</p>
         </div>
         <div className="px-3">
-          {["Fromage", "Produit Laitier"].map((type, index) => (
-            <div
-              key={index}
-              className="flex flex-row items-center justify-between gap-2 mb-3"
-            >
-              <div className="flex items-center gap-2">
-                <Checkbox
-                  color="danger"
-                  radius="sm"
-                  isSelected={selectedType.includes(type)}
-                  onChange={() =>
-                    handleCheckboxChange(setSelectedType, selectedType, type)
-                  }
-                >
-                  <p className="label-checkbox">{type}</p>
-                </Checkbox>
-              </div>
-              <Chip size="sm" className="bg-danger-100">
-                {typeCounts[type] || 0}
-              </Chip>
+          <div className="flex flex-row items-center justify-between gap-2 mb-3">
+            <div className="flex items-center gap-2">
+              <Checkbox
+                color="danger"
+                radius="sm"
+                className="border-box"
+                checked={selectedTypes.includes("fromage")}
+                onChange={() => handleCheckboxChangeType("fromage")}
+              >
+                <p className="label-checkbox">Fromage</p>
+              </Checkbox>
             </div>
-          ))}
+            <Chip size="sm" classNames={{ base: "bg-danger-100" }}>
+              00
+            </Chip>
+          </div>
+          <div className="flex flex-row items-center justify-between gap-2">
+            <div className="flex items-center gap-2">
+              <Checkbox
+                color="danger"
+                radius="sm"
+                checked={selectedTypes.includes("produit laitier")}
+                onChange={() => handleCheckboxChangeType("produit laitier")}
+              >
+                <p className="label-checkbox">Produit Laitier</p>
+              </Checkbox>
+            </div>
+            <Chip size="sm" classNames={{ base: "bg-danger-100" }}>
+              00
+            </Chip>
+          </div>
         </div>
       </div>
 
-      {/* Filtre Catégorie */}
+      {/* filtre catégorie */}
       <div className="w-60 lg:w-full mb-8">
         <div className="bg-white p-3 rounded-xl text-center mb-2">
           <p className="title-filtre">Catégorie</p>
         </div>
         <div className="px-3">
-          {["Chèvre", "Mixte", "Vache"].map((categorie, index) => (
-            <div
-              key={index}
-              className="flex flex-row items-center justify-between gap-2 mb-3"
-            >
-              <div className="flex items-center gap-2">
-                <Checkbox
-                  color="danger"
-                  radius="sm"
-                  isSelected={selectedCategorie.includes(categorie)}
-                  onChange={() =>
-                    handleCheckboxChange(
-                      setSelectedCategorie,
-                      selectedCategorie,
-                      categorie
-                    )
-                  }
-                >
-                  <p className="label-checkbox">{categorie}</p>
-                </Checkbox>
-              </div>
-              <Chip size="sm" className="bg-danger-100">
-                {categorieCounts[categorie] || 0}
-              </Chip>
+          <div className="flex flex-row items-center justify-between gap-2 mb-3">
+            <div className="flex items-center gap-2">
+              <Checkbox
+                color="danger"
+                radius="sm"
+                checked={selectedCategories.includes("chèvre")}
+                onChange={() => handleCheckboxChangeCategory("chèvre")}
+              >
+                <p className="label-checkbox">Chèvre</p>
+              </Checkbox>
             </div>
-          ))}
+            <Chip size="sm" classNames={{ base: "bg-danger-100" }}>
+              00
+            </Chip>
+          </div>
+
+          <div className="flex flex-row items-center justify-between gap-2 mb-3">
+            <div className="flex items-center gap-2">
+              <Checkbox
+                color="danger"
+                radius="sm"
+                checked={selectedCategories.includes("mixte")}
+                onChange={() => handleCheckboxChangeCategory("mixte")}
+              >
+                <p className="label-checkbox">Mixte</p>
+              </Checkbox>
+            </div>
+            <Chip size="sm" classNames={{ base: "bg-danger-100" }}>
+              00
+            </Chip>
+          </div>
+
+          <div className="flex flex-row items-center justify-between gap-2">
+            <div className="flex items-center gap-2">
+              <Checkbox
+                color="danger"
+                radius="sm"
+                checked={selectedCategories.includes("vache")}
+                onChange={() => handleCheckboxChangeCategory("vache")}
+              >
+                <p className="label-checkbox">Vache</p>
+              </Checkbox>
+            </div>
+            <Chip size="sm" classNames={{ base: "bg-danger-100" }}>
+              00
+            </Chip>
+          </div>
         </div>
       </div>
 
-      {/* Filtre Note moyenne */}
+      {/* filtre note moyenne */}
       <div className="w-60 lg:w-full mb-8">
+        {/* title */}
         <div className="bg-white p-3 rounded-xl text-center mb-2">
           <p className="title-filtre">Note moyenne</p>
         </div>
+        {/* corps */}
         <div className="px-3">
-          {[5, 4, 3, 2].map((note, index) => (
-            <div
-              key={index}
-              className="flex flex-row items-center justify-between gap-2 mb-3"
-            >
-              <div className="flex items-center gap-2">
-                <Checkbox
-                  color="danger"
-                  radius="sm"
-                  isSelected={selectedNote.includes(note)}
-                  onChange={() =>
-                    handleCheckboxChange(setSelectedNote, selectedNote, note)
-                  }
-                >
-                  <img src={starImages[note]} alt={`${note} étoiles`} />
-                </Checkbox>
-              </div>
-              <Chip size="sm" className="bg-danger-100">
-                {noteCounts[note] || 0}
-              </Chip>
+          {/* 5 étoiles */}
+          <div className="flex flex-row items-center justify-between gap-2 mb-3">
+            <div className="flex items-center gap-2">
+              <Checkbox color="danger" radius="sm">
+                <img src={stars5} alt="icon d'étoiles" />
+              </Checkbox>
             </div>
-          ))}
+            <Chip
+              size="sm"
+              classNames={{
+                base: "bg-danger-100",
+              }}
+            >
+              00
+            </Chip>
+          </div>
+          {/* 4 étoiles */}
+          <div className="flex flex-row items-center justify-between gap-2 mb-3">
+            <div className="flex items-center gap-2">
+              <Checkbox color="danger" radius="sm">
+                <img src={stars4} alt="icon d'étoiles" />
+              </Checkbox>
+            </div>
+            <Chip
+              size="sm"
+              classNames={{
+                base: "bg-danger-100",
+              }}
+            >
+              00
+            </Chip>
+          </div>
+          {/* 3 étoiles */}
+          <div className="flex flex-row items-center justify-between gap-2 mb-3">
+            <div className="flex items-center gap-2">
+              <Checkbox color="danger" radius="sm">
+                <img src={stars3} alt="icon d'étoiles" />
+              </Checkbox>
+            </div>
+            <Chip
+              size="sm"
+              classNames={{
+                base: "bg-danger-100",
+              }}
+            >
+              00
+            </Chip>
+          </div>
+          {/* 2 étoiles */}
+          <div className="flex flex-row items-center justify-between gap-2">
+            <div className="flex items-center gap-2">
+              <Checkbox color="danger" radius="sm">
+                <img src={stars2} alt="icon d'étoiles" />
+              </Checkbox>
+            </div>
+            <Chip
+              size="sm"
+              classNames={{
+                base: "bg-danger-100",
+              }}
+            >
+              00
+            </Chip>
+          </div>
         </div>
       </div>
-
-      {/* Filtre Affinage */}
+      {/* filtre affinage */}
       <div className="w-60 lg:w-full mb-8">
+        {/* title */}
         <div className="bg-white p-3 rounded-xl text-center mb-2">
           <p className="title-filtre">Affinage</p>
         </div>
+        {/* corps */}
         <div className="px-3">
-          {["Frais", "Affiné"].map((affinage, index) => (
-            <div
-              key={index}
-              className="flex flex-row items-center justify-between gap-2 mb-3"
-            >
-              <div className="flex items-center gap-2">
-                <Checkbox
-                  color="danger"
-                  radius="sm"
-                  isSelected={selectedAffinage.includes(affinage)}
-                  onChange={() =>
-                    handleCheckboxChange(
-                      setSelectedAffinage,
-                      selectedAffinage,
-                      affinage
-                    )
-                  }
-                >
-                  <p className="label-checkbox">{affinage}</p>
-                </Checkbox>
-              </div>
-              <Chip size="sm" className="bg-danger-100">
-                {affinageCounts[affinage] || 0}
-              </Chip>
+          <div className="flex flex-row items-center justify-between gap-2 mb-3">
+            <div className="flex items-center gap-2">
+              <Checkbox
+                color="danger"
+                radius="sm"
+                checked={selectedAffinages.includes("affiné")}
+                onChange={() => handleCheckboxChangeAffinage("affiné")}
+              >
+                <p className="label-checkbox">Affiné</p>
+              </Checkbox>
             </div>
-          ))}
+            <Chip
+              size="sm"
+              classNames={{
+                base: "bg-danger-100",
+              }}
+            >
+              00
+            </Chip>
+          </div>
+          <div className="flex flex-row items-center justify-between gap-2">
+            <div className="flex items-center gap-2">
+              <Checkbox
+                color="danger"
+                radius="sm"
+                checked={selectedAffinages.includes("frais")}
+                onChange={() => handleCheckboxChangeAffinage("frais")}
+              >
+                <p className="label-checkbox">Frais</p>
+              </Checkbox>
+            </div>
+            <Chip
+              size="sm"
+              classNames={{
+                base: "bg-danger-100",
+              }}
+            >
+              00
+            </Chip>
+          </div>
         </div>
       </div>
 
-      {/* Filtre Enrobage */}
+      {/* filtre enrobage */}
       <div className="w-60 lg:w-full mb-8">
+        {/* title */}
         <div className="bg-white p-3 rounded-xl text-center mb-2">
           <p className="title-filtre">Enrobage</p>
         </div>
+        {/* corps */}
         <div className="px-3">
-          {[
-            "Nature",
-            "Multiple",
-            "Bruschetta",
-            "Ail et Fines Herbes",
-            "Pempa",
-            "Moutarde",
-            "Echalote",
-            "Fénugrec",
-            "Figue",
-            "Myrtille",
-            "Papaye",
-          ].map((enrobage, index) => (
-            <div
-              key={index}
-              className="flex flex-row items-center justify-between gap-2 mb-3"
-            >
-              <div className="flex items-center gap-2">
-                <Checkbox
-                  color="danger"
-                  radius="sm"
-                  isSelected={selectedEnrobage.includes(enrobage)}
-                  onChange={() =>
-                    handleCheckboxChange(
-                      setSelectedEnrobage,
-                      selectedEnrobage,
-                      enrobage
-                    )
-                  }
-                >
-                  <p className="label-checkbox">{enrobage}</p>
-                </Checkbox>
-              </div>
-              <Chip size="sm" className="bg-danger-100">
-                {enrobageCounts[enrobage] || 0}
-              </Chip>
+          {/* Ail et Fines Herbes */}
+          <div className="flex flex-row items-center justify-between gap-2 mb-3">
+            <div className="flex items-center gap-2">
+              <Checkbox color="danger" radius="sm">
+                <p className="label-checkbox">Ail et Fines Herbes</p>
+              </Checkbox>
             </div>
-          ))}
+            <Chip
+              size="sm"
+              classNames={{
+                base: "bg-danger-100",
+              }}
+            >
+              00
+            </Chip>
+          </div>
+          {/* Bruschetta */}
+          <div className="flex flex-row items-center justify-between gap-2 mb-3">
+            <div className="flex items-center gap-2">
+              <Checkbox color="danger" radius="sm">
+                <p className="label-checkbox">Bruschetta</p>
+              </Checkbox>
+            </div>
+            <Chip
+              size="sm"
+              classNames={{
+                base: "bg-danger-100",
+              }}
+            >
+              00
+            </Chip>
+          </div>
+          {/* Moutarde */}
+          <div className="flex flex-row items-center justify-between gap-2 mb-3">
+            <div className="flex items-center gap-2">
+              <Checkbox color="danger" radius="sm">
+                <p className="label-checkbox">Moutarde</p>
+              </Checkbox>
+            </div>
+            <Chip
+              size="sm"
+              classNames={{
+                base: "bg-danger-100",
+              }}
+            >
+              00
+            </Chip>
+          </div>
+          {/* Multiple */}
+          <div className="flex flex-row items-center justify-between gap-2 mb-3">
+            <div className="flex items-center gap-2">
+              <Checkbox color="danger" radius="sm">
+                <p className="label-checkbox">Multiple</p>
+              </Checkbox>
+            </div>
+            <Chip
+              size="sm"
+              classNames={{
+                base: "bg-danger-100",
+              }}
+            >
+              00
+            </Chip>
+          </div>
+          {/* Nature */}
+          <div className="flex flex-row items-center justify-between gap-2 mb-3">
+            <div className="flex items-center gap-2">
+              <Checkbox color="danger" radius="sm">
+                <p className="label-checkbox">Nature</p>
+              </Checkbox>
+            </div>
+            <Chip
+              size="sm"
+              classNames={{
+                base: "bg-danger-100",
+              }}
+            >
+              00
+            </Chip>
+          </div>
+          {/* Pempa */}
+          <div className="flex flex-row items-center justify-between gap-2">
+            <div className="flex items-center gap-2">
+              <Checkbox color="danger" radius="sm">
+                <p className="label-checkbox">Pempa</p>
+              </Checkbox>
+            </div>
+            <Chip
+              size="sm"
+              classNames={{
+                base: "bg-danger-100",
+              }}
+            >
+              00
+            </Chip>
+          </div>
         </div>
       </div>
     </>
