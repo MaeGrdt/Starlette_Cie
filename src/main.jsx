@@ -12,6 +12,7 @@ import Dashboard from "./pages/Dashboard/dashboard";
 import Page_404 from "./pages/error404/page404";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import "./index.css";
+import Produits from "./pages/Produit/produit";
 
 const router = createBrowserRouter([
   {
@@ -33,6 +34,10 @@ const router = createBrowserRouter([
       {
         path: "boutique",
         element: <Boutique />,
+      },
+      {
+        path: "produit",
+        element: <Produits />,
       },
     ],
   },
