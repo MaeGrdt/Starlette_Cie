@@ -8,6 +8,7 @@ import {
   CardFooter,
   Button,
 } from "@nextui-org/react";
+import { useNavigate } from "react-router-dom";
 import stars from "../../assets/icons/icon-star.svg";
 import like from "../../assets/icons/icon-étoile(vide).svg";
 import stars5 from "../../assets/icons/5-stars.svg";
@@ -33,8 +34,8 @@ export default function Boutique() {
   const [produits, setProduits] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  
   const [token, setToken] = useState(null);
+  const navigate = useNavigate();
 
   const starsMap = {
     5.0: stars5,
@@ -62,7 +63,7 @@ export default function Boutique() {
   useEffect(() => {
     const storedToken = localStorage.getItem("token");
     setToken(storedToken);
-    
+
     const fetchProduits = async () => {
       try {
         const response = await axios.get("http://localhost:8000/api/produits");
@@ -181,6 +182,11 @@ export default function Boutique() {
   // const startProduct = indexOfFirstProduct + 1;
   // const endProduct = Math.min(indexOfLastProduct, totalProducts);
 
+  // Redirection vers la page produit
+  const handleProductClick = (productId) => {
+    navigate(`/produit/${productId}`);
+  };
+
   if (loading) return <div>Chargement...</div>;
   if (error) return <div>Erreur : {error}</div>;
 
@@ -255,7 +261,7 @@ export default function Boutique() {
                             shadow="sm"
                             key={index}
                             isPressable
-                            onPress={() => console.log("produit pressé")}
+                            onPress={() => handleProductClick(item.id)}
                             className="mb-4"
                           >
                             <CardBody className="overflow-visible p-0">
@@ -271,22 +277,22 @@ export default function Boutique() {
                                     : "../img/default.jpg"
                                 }
                               />
-                              
+
                               {/* Afficher le bouton seulement si le token est présent */}
-                            {token && (
-                              <Button
-                                isIconOnly
-                                radius="full"
-                                variant="light"
-                                className="absolute top-0 right-0 z-10"
-                              >
-                                <img
-                                  src={like}
-                                  alt="icon étoile"
-                                  className="size-7"
-                                />
-                              </Button>
-                            )}
+                              {token && (
+                                <Button
+                                  isIconOnly
+                                  radius="full"
+                                  variant="light"
+                                  className="absolute top-0 right-0 z-10"
+                                >
+                                  <img
+                                    src={like}
+                                    alt="icon étoile"
+                                    className="size-7"
+                                  />
+                                </Button>
+                              )}
 
                               {badgeSrc && (
                                 <Image
