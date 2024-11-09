@@ -39,7 +39,6 @@ export default function TabProduit() {
     axios
       .get(`http://localhost:8000/api/produits/${id}`)
       .then((response) => {
-        console.log("Réponse de l'API reçue:", response.data);
         setProduct(response.data);
 
         // Extraire les variantes du produit

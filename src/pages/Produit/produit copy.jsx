@@ -5,7 +5,6 @@ import {
   CheckboxGroup,
   Input,
   Spinner,
-  CardBody,
 } from "@nextui-org/react";
 import like from "../../assets/icons/icon-étoile(vide).svg";
 import stars5 from "../../assets/icons/5-stars.svg";
@@ -21,6 +20,7 @@ import stars05 from "../../assets/icons/0.5-stars.svg";
 import moins from "../../assets/icons/moins.svg";
 import plus from "../../assets/icons/plus.svg";
 import ModalAddPanier from "../../components/Modals/modal_add_panier";
+import ModalErrPanier from "../../components/Modals/modal_err_panier";
 import { CustomCheckbox } from "../../components/Checkbox/CustomCheckbox";
 import TabProduit from "../../components/Tabs/tabProduit";
 import { useParams } from "react-router-dom";
@@ -33,6 +33,7 @@ export default function Produits() {
   const [quantity, setQuantity] = useState(1);
   const [token, setToken] = useState(null);
   const [showModalAdd, setShowModalAdd] = useState(false);
+  const [showModalErr, setShowModalErr] = useState(false);
   const [affinageSelected, setAffinageSelected] = useState("");
   const [enrobageSelected, setEnrobageSelected] = useState([]);
   const [affinageOptions, setAffinageOptions] = useState([]);
@@ -43,21 +44,19 @@ export default function Produits() {
 
   useEffect(() => {
     const token = localStorage.getItem("token");
-    console.log("Token récupéré:", token);
     setToken(token);
   }, []);
 
   const handleButtonClick = () => {
-    if (!affinageSelected || enrobageSelected.length === 0) {
-      alert(
-        "Veuillez sélectionner un affinage et un enrobage avant d'ajouter au panier."
-      );
-      return;
+    if (token) {
+      addToCart();
+    } else {
+      setShowModalErr(true);
+      setShowModalAdd(false);
     }
-    addToCart();
   };
-
   const closeModalAdd = () => setShowModalAdd(false);
+  const closeModalErr = () => setShowModalErr(false);
 
   const increment = () => setQuantity(quantity + 1);
   const decrement = () => setQuantity(quantity > 0 ? quantity - 1 : 0);
@@ -91,6 +90,11 @@ export default function Produits() {
         // Initialiser le prix avec la première variante disponible
         if (response.data.produitsVariants.length > 0) {
           setCurrentPrice(response.data.produitsVariants[0].prix / 100);
+        }
+
+        // Initialiser le poids avec la première variante disponible
+        if (response.data.produitsVariants.length > 0) {
+          setPoids(response.data.produitsVariants[0].poids);
         }
       })
       .catch((error) => {
@@ -159,11 +163,14 @@ export default function Produits() {
       prix: currentPrice,
     };
 
+    // Ajouter l'article au panier
     setPanier((prevPanier) => [...prevPanier, item]);
 
+    // Optionnel : Ajouter le panier au localStorage pour le conserver entre sessions
     localStorage.setItem("panier", JSON.stringify([...panier, item]));
 
-    setShowModalAdd(true);
+    setShowModalAdd(true); // Afficher la modal de succès
+    setShowModalErr(false); // Cacher la modal d'erreur
   };
 
   useEffect(() => {
@@ -183,28 +190,26 @@ export default function Produits() {
         <div className="flex w-full flex-col lg:col-start-2 xl:col-start-3 col-span-4 ">
           <div className="grid grid-cols-3">
             <div className="p-2">
-              <div className="relative">
-                {/* Afficher le bouton seulement si le token est présent */}
-                {token && (
-                  <Button
-                    isIconOnly
-                    radius="full"
-                    variant="light"
-                    className="absolute top-0 right-0 z-20"
-                    style={{ marginTop: "" }}
-                  >
-                    <img src={like} alt="icon étoile" className="size-18" />
-                  </Button>
-                )}
-                <Image
-                  shadow="sm"
-                  radius="lg"
-                  width="100%"
-                  alt="{product.nom}"
-                  className="w-full object-cover"
-                  src={product.id_image?.url}
-                />
-              </div>
+              <Image
+                shadow="sm"
+                radius="lg"
+                width="100%"
+                alt="{product.nom}"
+                className="w-full object-cover"
+                src={product.id_image?.url}
+              />
+              {/* Afficher le bouton seulement si le token est présent */}
+              {token && (
+                <Button
+                  isIconOnly
+                  radius="full"
+                  variant="light"
+                  className="absolute top-0 right-0 z-10"
+                >
+                  <img src={like} alt="icon étoile" className="size-7" />
+                </Button>
+              )}
+
               <div className="flex justify-start py-2 px-3 space-x-2">
                 <Image
                   shadow="sm"
@@ -303,8 +308,8 @@ export default function Produits() {
                   <CheckboxGroup
                     className="gap-1"
                     orientation="horizontal"
-                    value={enrobageSelected}
-                    onChange={(value) => setEnrobageSelected(value)}
+                    value={enrobageSelected} // Utilisation d'une chaîne vide si l'état est null
+                    onChange={(value) => setEnrobageSelected(value)} // Mise à jour de l'état
                   >
                     {enrobageOptions.map((enrobage, index) => (
                       <CustomCheckbox
@@ -318,7 +323,7 @@ export default function Produits() {
                         disabled={
                           enrobageSelected.length > 0 &&
                           !enrobageSelected.includes(enrobage.id)
-                        }
+                        } // Désactivation des autres options
                       >
                         {enrobage.nom_enrobage}
                       </CustomCheckbox>
@@ -360,18 +365,15 @@ export default function Produits() {
                   </Button>
                 </div>
                 <Button
-                  className={`px-5 text-white ${
-                    !affinageSelected || enrobageSelected.length === 0
-                      ? "btn-disabled"
-                      : "bg-danger-600"
-                  }`}
+                  className="bg-danger-600 text-white px-5"
                   onClick={handleButtonClick}
-                  disabled={!affinageSelected || enrobageSelected.length === 0}
                 >
                   Ajouter au panier
                 </Button>
 
                 {showModalAdd && <ModalAddPanier onClose={closeModalAdd} />}
+
+                {showModalErr && <ModalErrPanier onClose={closeModalErr} />}
               </div>
             </div>
           </div>
