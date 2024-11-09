@@ -10,9 +10,10 @@ import Connexion from "./pages/Connexion/connexion";
 import Profile from "./pages/Profile/profile";
 import Dashboard from "./pages/Dashboard/dashboard";
 import Page_404 from "./pages/error404/page404";
+import Produits from "./pages/Produit/produit";
+import Panier from "./pages/Panier/panier";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import "./index.css";
-import Panier from "./pages/Panier/panier";
 
 const router = createBrowserRouter([
   {
@@ -34,6 +35,10 @@ const router = createBrowserRouter([
       {
         path: "boutique",
         element: <Boutique />,
+      },
+      {
+        path: "produit/:id",
+        element: <Produits />,
       },
       {
         path: "panier",

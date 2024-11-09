@@ -1,0 +1,26 @@
+.border-default-200 {
+  border-color: #c20e4d;
+  border-width: 1px;
+}
+
+:hover.border-default-200 {
+  border-color: #c20e4d;
+  background-color: #fee7ef;
+}
+
+.group[data-focus="true"]
+  .group-data-\[focus\=true\]\:border-default-foreground {
+  border-color: #c20e4d;
+}
+
+.btn-disabled {
+  background-color: #d4d4d8;
+  color: #ffffff;
+  cursor: not-allowed;
+}
+
+.row-header {
+  font-weight: bold;
+  background-color: hsla(339, 92%, 95%, 0.5);
+  width: 10rem;
+}
