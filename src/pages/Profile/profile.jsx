@@ -1,6 +1,5 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-
 import stars from "../../assets/icons/icon-star.svg";
 import param from "../../assets/icons/icon-param.svg";
 import deco from "../../assets/icons/icon-sortie.svg";
@@ -12,10 +11,12 @@ import Commentaires from "./commentaires";
 import Paramètre from "./parametre";
 import Footer from "../../components/Footer/footer";
 import { Button, Card, Tab, Tabs } from "@nextui-org/react";
+import ModalDeco from "../../components/Modals/modal_deco"; // Importation de la modal
 import "./style.css";
 
 export default function Profile() {
   const [selected, setSelected] = React.useState("propos");
+  const [isModalOpen, setIsModalOpen] = useState(false); // État pour gérer l'ouverture de la modal
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -28,9 +29,20 @@ export default function Profile() {
     }
   }, [navigate]);
 
-  const handleLogout = () => {
-    localStorage.removeItem("token");
-    navigate("/");
+  // Fonction pour ouvrir la modal de déconnexion
+  const handleLogoutClick = () => {
+    setIsModalOpen(true); // Ouvrir la modal de confirmation
+  };
+
+  // Fonction pour fermer la modal sans déconnexion
+  const handleModalClose = () => {
+    setIsModalOpen(false); // Fermer la modal
+  };
+
+  // Fonction pour gérer la déconnexion
+  const handleConfirmLogout = () => {
+    localStorage.removeItem("token"); // Retirer le token
+    navigate("/"); // Rediriger vers la page d'accueil
   };
 
   return (
@@ -133,7 +145,7 @@ export default function Profile() {
                 <Button
                   isIconOnly
                   className="btn-custom"
-                  onClick={handleLogout}
+                  onClick={handleLogoutClick} // Affiche la modal de déconnexion
                 >
                   <img src={deco} alt="icon déconnexion" className="w-12" />
                 </Button>
@@ -144,6 +156,14 @@ export default function Profile() {
       </div>
 
       <Footer />
+
+      {/* Modal de déconnexion */}
+      {isModalOpen && (
+        <ModalDeco
+          onClose={handleModalClose} // Passer la fonction de fermeture
+          onConfirm={handleConfirmLogout} // Passer la fonction de confirmation
+        />
+      )}
     </>
   );
 }

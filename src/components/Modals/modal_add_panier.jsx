@@ -15,8 +15,8 @@ import moins from "../../assets/icons/moins.svg";
 import plus from "../../assets/icons/plus.svg";
 import { Link } from "react-router-dom";
 
-export default function ModalAddPanier({ onClose }) {
-  const [quantity, setQuantity] = useState(1);
+export default function ModalAddPanier({ onClose, item }) {
+  const [quantity, setQuantity] = useState(item.quantity || 1);
   const increment = () => setQuantity(quantity + 1);
   const decrement = () => setQuantity(quantity > 0 ? quantity - 1 : 0);
 
@@ -44,19 +44,23 @@ export default function ModalAddPanier({ onClose }) {
                   <div className="2xl:grid 2xl:grid-cols-3">
                     <div className="relative md:max-lg:flex md:max-lg:justify-center content-center">
                       <Image
-                        alt="{item.nom}"
+                        alt={item.nom}
                         className="object-cover mx-auto size-80 mb-5 md:size-64 2xl:mb-0 xl:size-36"
                         shadow="sm"
-                        src="{item.image}"
+                        src={item.image}
                       />
                     </div>
 
                     <div className="col-span-2">
                       <div className="flex justify-between items-start">
                         <div className="flex flex-col 2xl:ml-2">
-                          <h3 className="mb-1 md:mb-0">item.nom</h3>
-                          <p className="my-1">affinage choisit</p>
-                          <p className="my-1">enrobage choisit</p>
+                          <h3 className="mb-1 md:mb-0">{item.nom}</h3>
+                          <p className="my-1">
+                            Affinage choisi : {item.affinage}
+                          </p>
+                          <p className="my-1">
+                            Enrobage choisi : {item.enrobage}
+                          </p>
                         </div>
                       </div>
                       <div className="flex justify-start space-x-10 my-5">
@@ -97,7 +101,7 @@ export default function ModalAddPanier({ onClose }) {
                         </div>
                         <div>
                           <p className="text-danger font-semibold my-1 grid justify-items-center">
-                            3.30€
+                            {item.prix} €
                           </p>
                         </div>
                       </div>
@@ -107,16 +111,14 @@ export default function ModalAddPanier({ onClose }) {
               </Card>
               <div className="flex justify-start">
                 <Button
-                  className="bg-danger-600 text-white w-40 mt-1 m-auto"
+                  className="w-40 mt-1 border-danger-600 m-auto"
+                  variant="bordered"
                   onPress={onClose}
                 >
                   Continuer mes achats
                 </Button>
                 <Link to="/panier" className="m-auto">
-                  <Button
-                    className="w-40 mt-1 border-danger-600"
-                    variant="bordered"
-                  >
+                  <Button className="bg-danger-600 text-white w-40 mt-1 m-auto">
                     Aller au panier
                   </Button>
                 </Link>

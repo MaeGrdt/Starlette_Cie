@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Tabs,
   Tab,
@@ -10,18 +10,60 @@ import {
   Input,
 } from "@nextui-org/react";
 import stars from "../../assets/icons/icon-star.svg";
+import Header from "../../components/Header/header";
+import Footer from "../../components/Footer/footer";
+import ModalErrPanier from "../../components/Modals/modal_err_panier";
 import croix from "../../assets/icons/icon-croix.svg";
-// import moins from "../../assets/icons/moins.svg";
-// import plus from "../../assets/icons/plus.svg";
-import "./style_panier.css";
-import axios from "axios";
 
 export default function Panier() {
   const [selected, setSelected] = useState("panier");
   const [token, setToken] = useState(null);
-  const [quantity, setQuantity] = useState(1);
-  const increment = () => setQuantity(quantity + 1);
-  const decrement = () => setQuantity(quantity > 0 ? quantity - 1 : 0);
+  const [products, setProducts] = useState([]);
+  const [showModal, setShowModal] = useState(false);
+
+  useEffect(() => {
+    const panierJSON = localStorage.getItem("panier");
+    if (panierJSON) {
+      setProducts(JSON.parse(panierJSON));
+    }
+    const savedToken = localStorage.getItem("token");
+    if (savedToken) setToken(savedToken);
+  }, []);
+
+  const increment = (productIndex) => {
+    setProducts((prevProducts) =>
+      prevProducts.map((product, index) =>
+        index === productIndex
+          ? { ...product, quantity: product.quantity + 1 }
+          : product
+      )
+    );
+  };
+
+  const decrement = (productIndex) => {
+    setProducts((prevProducts) =>
+      prevProducts.map((product, index) =>
+        index === productIndex && product.quantity > 1
+          ? { ...product, quantity: product.quantity - 1 }
+          : product
+      )
+    );
+  };
+
+  const removeProduct = (productIndex) => {
+    const updatedProducts = [...products];
+    updatedProducts.splice(productIndex, 1);
+    setProducts(updatedProducts);
+    localStorage.setItem("panier", JSON.stringify(updatedProducts));
+  };
+
+  const handleOrderClick = () => {
+    if (token) {
+      console.log("Commande passée !");
+    } else {
+      setShowModal(true);
+    }
+  };
 
   return (
     <>
@@ -52,220 +94,116 @@ export default function Panier() {
             >
               <Card className="bg-danger-50 grid grid-cols-3 p-3 space-x-3">
                 <div className="col-span-2 rounded-md mr-1 space-y-3">
-                  <Card
-                    className="border-none shadow-none rounded-xl"
-                    key="index"
-                  >
-                    <CardBody>
-                      <div className="2xl:grid 2xl:grid-cols-4">
-                        <div className="relative md:max-lg:flex md:max-lg:justify-center content-center">
-                          <Image
-                            alt="{item.nom}"
-                            className="object-cover mx-auto size-80 md:size-64 2xl:mb-0 xl:size-36"
-                            shadow="sm"
-                            src="{item.image}"
-                          />
-                        </div>
+                  {products.map((item, index) => (
+                    <Card
+                      className="border-none shadow-none rounded-xl"
+                      key={index}
+                    >
+                      <CardBody>
+                        <div className="2xl:grid 2xl:grid-cols-4">
+                          <div className="relative md:max-lg:flex md:max-lg:justify-center content-center">
+                            <Image
+                              alt={item.nom}
+                              className="object-cover mx-auto size-80 md:size-64 2xl:mb-0 xl:size-36"
+                              shadow="sm"
+                              src={item.image}
+                            />
+                          </div>
 
-                        <div className="col-span-3 pl-4">
-                          <div className="flex flex-col">
-                            <div className="flex justify-between mb-1 overflow-x-hidden">
-                              <h3 className="mb-1 md:mb-0 text-lg">
-                                Nom du produit
-                              </h3>
-                              <Button
-                                isIconOnly
-                                className="bg-transparent"
-                                style={{
-                                  marginTop: "-0.8rem",
-                                  marginRight: "-0.8rem",
-                                }}
-                              >
-                                <img
-                                  src={croix}
-                                  alt="icon de croix"
-                                  className="size-8"
-                                />
-                              </Button>
-                            </div>
-
-                            <div className="pl-2 space-y-2">
-                              <div className="flex justify-start space-x-2">
-                                <p className="font-bold">Affinage :</p>
-                                <p>Frais</p>
-                              </div>
-
-                              <div className="flex justify-start space-x-2">
-                                <p className="font-bold">Enrobage :</p>
-                                <p>Nature</p>
-                              </div>
-                              <div
-                                className="flex justify-between"
-                                style={{ marginTop: "1.5rem" }}
-                              >
-                                <div className="flex justify-start space-x-1 quantity-input-container">
-                                  <Button
-                                    isIconOnly
-                                    auto
-                                    onClick={decrement}
-                                    className="bg-transparent"
-                                    style={{ marginTop: "-0.2rem" }}
-                                  >
-                                    {/* <img
-                                      src={moins}
-                                      alt="icon moins"
-                                      className="size-2"
-                                    /> */}
-                                    -
-                                  </Button>
-                                  <Input
-                                    radius="sm"
-                                    size="sm"
-                                    variant="bordered"
-                                    // value={quantity}
-                                    value="1"
-                                    onChange={(e) =>
-                                      setQuantity(Number(e.target.value))
-                                    }
-                                    className="w-12"
-                                    style={{
-                                      textAlign: "center",
-                                    }}
+                          <div className="col-span-3 pl-4">
+                            <div className="flex flex-col">
+                              <div className="flex justify-between mb-1 overflow-x-hidden">
+                                <h3 className="mb-1 md:mb-0 text-lg">
+                                  {item.nom}
+                                </h3>
+                                <Button
+                                  isIconOnly
+                                  className="bg-transparent"
+                                  onClick={() => removeProduct(index)}
+                                  style={{
+                                    marginTop: "-0.8rem",
+                                    marginRight: "-0.8rem",
+                                  }}
+                                >
+                                  <img
+                                    src={croix}
+                                    alt="icon de croix"
+                                    className="size-8"
                                   />
-                                  <Button
-                                    isIconOnly
-                                    auto
-                                    onClick={increment}
-                                    className="bg-transparent"
-                                    style={{ marginTop: "-0.2rem" }}
-                                  >
-                                    {/* <img
-                                      src={plus}
-                                      alt="icon plus"
-                                      className="size-2"
-                                    /> */}
-                                    +
-                                  </Button>
+                                </Button>
+                              </div>
+
+                              <div className="pl-2 space-y-2">
+                                <div className="flex justify-start space-x-2">
+                                  <p className="font-bold">Affinage :</p>
+                                  <p>{item.affinage}</p>
                                 </div>
-                                <div>
-                                  <p className="text-danger text-base font-semibold grid">
-                                    3.30€
-                                  </p>
+
+                                <div className="flex justify-start space-x-2">
+                                  <p className="font-bold">Enrobage :</p>
+                                  <p>{item.enrobage}</p>
+                                </div>
+                                <div
+                                  className="flex justify-between"
+                                  style={{ marginTop: "1.5rem" }}
+                                >
+                                  <div className="flex justify-start space-x-1 quantity-input-container">
+                                    <Button
+                                      isIconOnly
+                                      auto
+                                      onClick={() => decrement(index)}
+                                      className="bg-transparent"
+                                      style={{ marginTop: "-0.2rem" }}
+                                    >
+                                      -
+                                    </Button>
+                                    <Input
+                                      radius="sm"
+                                      size="sm"
+                                      variant="bordered"
+                                      value={item.quantity}
+                                      onChange={(e) =>
+                                        setProducts((prevProducts) =>
+                                          prevProducts.map((product, i) =>
+                                            i === index
+                                              ? {
+                                                  ...product,
+                                                  quantity: Number(
+                                                    e.target.value
+                                                  ),
+                                                }
+                                              : product
+                                          )
+                                        )
+                                      }
+                                      className="w-12"
+                                      style={{
+                                        textAlign: "center",
+                                      }}
+                                    />
+                                    <Button
+                                      isIconOnly
+                                      auto
+                                      onClick={() => increment(index)}
+                                      className="bg-transparent"
+                                      style={{ marginTop: "-0.2rem" }}
+                                    >
+                                      +
+                                    </Button>
+                                  </div>
+                                  <div>
+                                    <p className="text-danger text-base font-semibold grid">
+                                      {item.prix} €
+                                    </p>
+                                  </div>
                                 </div>
                               </div>
                             </div>
                           </div>
                         </div>
-                      </div>
-                    </CardBody>
-                  </Card>
-                  <Card
-                    className="border-none shadow-none rounded-xl"
-                    key="index"
-                  >
-                    <CardBody>
-                      <div className="2xl:grid 2xl:grid-cols-4">
-                        <div className="relative md:max-lg:flex md:max-lg:justify-center content-center">
-                          <Image
-                            alt="{item.nom}"
-                            className="object-cover mx-auto size-80 md:size-64 2xl:mb-0 xl:size-36"
-                            shadow="sm"
-                            src="{item.image}"
-                          />
-                        </div>
-
-                        <div className="col-span-3 pl-4">
-                          <div className="flex flex-col">
-                            <div className="flex justify-between mb-1 overflow-x-hidden">
-                              <h3 className="mb-1 md:mb-0 text-lg">
-                                Nom du produit
-                              </h3>
-                              <Button
-                                isIconOnly
-                                className="bg-transparent"
-                                style={{
-                                  marginTop: "-0.8rem",
-                                  marginRight: "-0.8rem",
-                                }}
-                              >
-                                <img
-                                  src={croix}
-                                  alt="icon de croix"
-                                  className="size-8"
-                                />
-                              </Button>
-                            </div>
-
-                            <div className="pl-2 space-y-2">
-                              <div className="flex justify-start space-x-2">
-                                <p className="font-bold">Affinage :</p>
-                                <p>Frais</p>
-                              </div>
-
-                              <div className="flex justify-start space-x-2">
-                                <p className="font-bold">Enrobage :</p>
-                                <p>Multiple</p>
-                              </div>
-                              <div
-                                className="flex justify-between"
-                                style={{ marginTop: "1.5rem" }}
-                              >
-                                <div className="flex justify-start space-x-1 quantity-input-container">
-                                  <Button
-                                    isIconOnly
-                                    auto
-                                    onClick={decrement}
-                                    className="bg-transparent"
-                                    style={{ marginTop: "-0.2rem" }}
-                                  >
-                                    {/* <img
-                                      src={moins}
-                                      alt="icon moins"
-                                      className="size-2"
-                                    /> */}
-                                    -
-                                  </Button>
-                                  <Input
-                                    radius="sm"
-                                    size="sm"
-                                    variant="bordered"
-                                    // value={quantity}
-                                    value="2"
-                                    onChange={(e) =>
-                                      setQuantity(Number(e.target.value))
-                                    }
-                                    className="w-12"
-                                    style={{
-                                      textAlign: "center",
-                                    }}
-                                  />
-                                  <Button
-                                    isIconOnly
-                                    auto
-                                    onClick={increment}
-                                    className="bg-transparent"
-                                    style={{ marginTop: "-0.2rem" }}
-                                  >
-                                    {/* <img
-                                      src={plus}
-                                      alt="icon plus"
-                                      className="size-2"
-                                    /> */}
-                                    +
-                                  </Button>
-                                </div>
-                                <div>
-                                  <p className="text-danger text-base font-semibold grid">
-                                    7.00€
-                                  </p>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </CardBody>
-                  </Card>
+                      </CardBody>
+                    </Card>
+                  ))}
                   <Divider
                     className="my-3 bg-danger-600 mx-auto"
                     style={{ width: "35rem" }}
@@ -275,10 +213,17 @@ export default function Panier() {
                       className="text-default-500"
                       style={{ marginTop: "0.2rem" }}
                     >
-                      Sous-total (3 articles)
+                      Sous-total ({products.length} articles)
                     </p>
                     <p className="text-danger-600 text-base font-bold">
-                      10.30 €
+                      {products
+                        .reduce(
+                          (acc, item) =>
+                            acc + parseFloat(item.prix) * item.quantity,
+                          0
+                        )
+                        .toFixed(2)}{" "}
+                      €
                     </p>
                   </div>
                 </div>
@@ -289,10 +234,22 @@ export default function Panier() {
                     </h2>
                     <div className="flex justify-between">
                       <p>Sous-Total</p>
-                      <p>10.30 €</p>
+                      <p className="text-danger-600 text-base font-bold">
+                        {products
+                          .reduce(
+                            (acc, item) =>
+                              acc + parseFloat(item.prix) * item.quantity,
+                            0
+                          )
+                          .toFixed(2)}{" "}
+                        €
+                      </p>
                     </div>
                     <div className="flex">
-                      <Button className="bg-danger-600 text-white w-40 m-auto">
+                      <Button
+                        className="bg-danger-600 text-white w-40 m-auto"
+                        onClick={handleOrderClick}
+                      >
                         Passer la commande
                       </Button>
                     </div>
@@ -303,6 +260,7 @@ export default function Panier() {
           </Tabs>
         </div>
       </div>
+      {showModal && <ModalErrPanier onClose={() => setShowModal(false)} />}
     </>
   );
 }

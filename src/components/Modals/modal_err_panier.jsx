@@ -28,8 +28,7 @@ export default function ModalErrPanier({ onClose }) {
             </ModalHeader>
             <ModalBody>
               <p className="text-base text-center mt-4 mb-5">
-                Vous devez être identifié pour ajouter des produits dans votre
-                panier.
+                Vous devez être identifié pour commander.
               </p>
               <Link to="/connexion" className="m-auto">
                 <Button className="bg-danger-600 text-white w-40 mt-1">
