@@ -7,6 +7,7 @@ import {
   Image,
   CardFooter,
   Button,
+  Spinner,
 } from "@nextui-org/react";
 import { useNavigate } from "react-router-dom";
 import stars from "../../assets/icons/icon-star.svg";
@@ -187,7 +188,7 @@ export default function Boutique() {
     navigate(`/produit/${productId}`);
   };
 
-  if (loading) return <div>Chargement...</div>;
+  if (loading) return <Spinner color="danger" className="mt-5 flex justify-center" />;;
   if (error) return <div>Erreur : {error}</div>;
 
   return (
