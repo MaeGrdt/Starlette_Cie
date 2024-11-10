@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import stars from "../../assets/icons/icon-star.svg";
 import param from "../../assets/icons/icon-param.svg";
 import deco from "../../assets/icons/icon-sortie.svg";
@@ -11,38 +10,52 @@ import Commentaires from "./commentaires";
 import Paramètre from "./parametre";
 import Footer from "../../components/Footer/footer";
 import { Button, Card, Tab, Tabs } from "@nextui-org/react";
-import ModalDeco from "../../components/Modals/modal_deco"; // Importation de la modal
+import ModalDeco from "../../components/Modals/modal_deco";
+import { useNavigate, useLocation } from "react-router-dom";
 import "./style.css";
 
 export default function Profile() {
   const [selected, setSelected] = React.useState("propos");
-  const [isModalOpen, setIsModalOpen] = useState(false); // État pour gérer l'ouverture de la modal
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
     const token = localStorage.getItem("token");
-    console.log("Token actuel:", token);
 
     if (!token) {
-      console.log("Pas de token, redirection vers 404");
       navigate("/error_404");
     }
-  }, [navigate]);
 
-  // Fonction pour ouvrir la modal de déconnexion
+    // Vérifiez si le paiement a été finalisé
+    const queryParams = new URLSearchParams(location.search);
+    const sessionId = queryParams.get("session_id");
+
+    if (sessionId) {
+      // Appel de l'API pour vérifier l'état du paiement
+      fetch(`/api/check-payment-status?session_id=${sessionId}`)
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.status === "success") {
+            // Supprimer le panier du localStorage en cas de succès
+            localStorage.removeItem("panier");
+          }
+        })
+        .catch((error) => console.error("Erreur de vérification du paiement:", error));
+    }
+  }, [location, navigate]);
+
   const handleLogoutClick = () => {
-    setIsModalOpen(true); // Ouvrir la modal de confirmation
+    setIsModalOpen(true);
   };
 
-  // Fonction pour fermer la modal sans déconnexion
   const handleModalClose = () => {
-    setIsModalOpen(false); // Fermer la modal
+    setIsModalOpen(false);
   };
 
-  // Fonction pour gérer la déconnexion
   const handleConfirmLogout = () => {
-    localStorage.removeItem("token"); // Retirer le token
-    navigate("/"); // Rediriger vers la page d'accueil
+    localStorage.removeItem("token");
+    navigate("/");
   };
 
   return (
@@ -145,7 +158,7 @@ export default function Profile() {
                 <Button
                   isIconOnly
                   className="btn-custom"
-                  onClick={handleLogoutClick} // Affiche la modal de déconnexion
+                  onClick={handleLogoutClick}
                 >
                   <img src={deco} alt="icon déconnexion" className="w-12" />
                 </Button>
@@ -159,10 +172,7 @@ export default function Profile() {
 
       {/* Modal de déconnexion */}
       {isModalOpen && (
-        <ModalDeco
-          onClose={handleModalClose} // Passer la fonction de fermeture
-          onConfirm={handleConfirmLogout} // Passer la fonction de confirmation
-        />
+        <ModalDeco onClose={handleModalClose} onConfirm={handleConfirmLogout} />
       )}
     </>
   );

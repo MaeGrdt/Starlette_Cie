@@ -10,16 +10,16 @@ import {
   Input,
 } from "@nextui-org/react";
 import stars from "../../assets/icons/icon-star.svg";
-import Header from "../../components/Header/header";
-import Footer from "../../components/Footer/footer";
 import ModalErrPanier from "../../components/Modals/modal_err_panier";
 import croix from "../../assets/icons/icon-croix.svg";
+import { loadStripe } from "@stripe/stripe-js";
 
 export default function Panier() {
   const [selected, setSelected] = useState("panier");
   const [token, setToken] = useState(null);
   const [products, setProducts] = useState([]);
   const [showModal, setShowModal] = useState(false);
+  const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLIC_KEY);
 
   useEffect(() => {
     const panierJSON = localStorage.getItem("panier");
@@ -57,11 +57,49 @@ export default function Panier() {
     localStorage.setItem("panier", JSON.stringify(updatedProducts));
   };
 
-  const handleOrderClick = () => {
+  const handleOrderClick = async () => {
     if (token) {
-      console.log("Commande passée !");
+      // Récupérer les données du panier
+      const panier = products.map((item) => ({
+        nom: item.nom,
+        prix: item.prix,
+        quantity: item.quantity,
+      }));
+
+      // Envoyer les données du panier au backend pour créer la session Stripe
+      try {
+        const response = await fetch(
+          "http://localhost:8000/api/create-checkout-session",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ panier }), // Envoie le panier au backend
+          }
+        );
+
+        const data = await response.json();
+
+        // Vérifier si on a bien récupéré la sessionId
+        if (data.sessionId) {
+          const stripe = await stripePromise; // Charger Stripe.js avec ta clé publique
+          const { error } = await stripe.redirectToCheckout({
+            sessionId: data.sessionId, // Utiliser la sessionId retournée
+          });
+
+          if (error) {
+            console.error("Erreur Stripe Checkout:", error);
+          }
+        }
+      } catch (error) {
+        console.error(
+          "Erreur lors de la création de la session Stripe:",
+          error
+        );
+      }
     } else {
-      setShowModal(true);
+      setShowModal(true); // Afficher la modal d'erreur si l'utilisateur n'est pas connecté
     }
   };
 

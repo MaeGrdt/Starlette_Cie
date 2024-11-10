@@ -26,7 +26,7 @@ export default function HeaderProfile() {
         </NavbarContent>
         <NavbarContent justify="end">
           <NavbarItem>
-            <Link to="panier">
+            <Link to="/panier">
               <img src={caddie} alt="icon caddie" />
             </Link>
           </NavbarItem>
