@@ -2,7 +2,6 @@ import {
   Navbar,
   NavbarContent,
   NavbarItem,
-  Link,
   Image,
   Avatar,
 } from "@nextui-org/react";
@@ -11,7 +10,7 @@ import home from "../../assets/icons/icon-accueil.svg";
 import contour from "../../assets/icons/pdp-contour.svg";
 import icon_avatar from "/img/pdp.png";
 import { useState } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, Link } from "react-router-dom";
 import "./style.css";
 
 export default function HeaderProfile() {
@@ -27,7 +26,7 @@ export default function HeaderProfile() {
         </NavbarContent>
         <NavbarContent justify="end">
           <NavbarItem>
-            <Link href="#">
+            <Link to="/panier">
               <img src={caddie} alt="icon caddie" />
             </Link>
           </NavbarItem>
@@ -41,10 +40,7 @@ export default function HeaderProfile() {
         />
       </div>
       <div className="">
-        <Avatar
-          src={icon_avatar}
-          className="avatar absolute inset-y-0"
-        />
+        <Avatar src={icon_avatar} className="avatar absolute inset-y-0" />
         <Avatar src={contour} className="avatar absolute inset-y-0" />
       </div>
     </>

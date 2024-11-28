@@ -1,6 +1,4 @@
-import React, { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-
+import React, { useEffect, useState } from "react";
 import stars from "../../assets/icons/icon-star.svg";
 import param from "../../assets/icons/icon-param.svg";
 import deco from "../../assets/icons/icon-sortie.svg";
@@ -12,23 +10,50 @@ import Commentaires from "./commentaires";
 import Paramètre from "./parametre";
 import Footer from "../../components/Footer/footer";
 import { Button, Card, Tab, Tabs } from "@nextui-org/react";
+import ModalDeco from "../../components/Modals/modal_deco";
+import { useNavigate, useLocation } from "react-router-dom";
 import "./style.css";
 
 export default function Profile() {
   const [selected, setSelected] = React.useState("propos");
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
     const token = localStorage.getItem("token");
-    console.log("Token actuel:", token);
 
     if (!token) {
-      console.log("Pas de token, redirection vers 404");
       navigate("/error_404");
     }
-  }, [navigate]);
 
-  const handleLogout = () => {
+    // Vérifiez si le paiement a été finalisé
+    const queryParams = new URLSearchParams(location.search);
+    const sessionId = queryParams.get("session_id");
+
+    if (sessionId) {
+      // Appel de l'API pour vérifier l'état du paiement
+      fetch(`/api/check-payment-status?session_id=${sessionId}`)
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.status === "success") {
+            // Supprimer le panier du localStorage en cas de succès
+            localStorage.removeItem("panier");
+          }
+        })
+        .catch((error) => console.error("Erreur de vérification du paiement:", error));
+    }
+  }, [location, navigate]);
+
+  const handleLogoutClick = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleModalClose = () => {
+    setIsModalOpen(false);
+  };
+
+  const handleConfirmLogout = () => {
     localStorage.removeItem("token");
     navigate("/");
   };
@@ -133,7 +158,7 @@ export default function Profile() {
                 <Button
                   isIconOnly
                   className="btn-custom"
-                  onClick={handleLogout}
+                  onClick={handleLogoutClick}
                 >
                   <img src={deco} alt="icon déconnexion" className="w-12" />
                 </Button>
@@ -144,6 +169,11 @@ export default function Profile() {
       </div>
 
       <Footer />
+
+      {/* Modal de déconnexion */}
+      {isModalOpen && (
+        <ModalDeco onClose={handleModalClose} onConfirm={handleConfirmLogout} />
+      )}
     </>
   );
 }

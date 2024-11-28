@@ -5,13 +5,12 @@ import {
   NavbarMenuItem,
   NavbarContent,
   NavbarItem,
-  Link,
   Image,
 } from "@nextui-org/react";
 import caddie from "../../assets/icons/icon-caddie.svg";
 import compte from "../../assets/icons/icon-compte.svg";
 import { useState, useEffect } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, Link } from "react-router-dom";
 import "./style.css";
 
 export default function Header() {
@@ -53,7 +52,7 @@ export default function Header() {
             </NavbarItem>
           )}
           <NavbarItem>
-            <Link href="#">
+            <Link to="panier">
               <img src={caddie} alt="icon caddie" />
             </Link>
           </NavbarItem>

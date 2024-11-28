@@ -5,7 +5,6 @@ import {
   CheckboxGroup,
   Input,
   Spinner,
-  CardBody,
 } from "@nextui-org/react";
 import like from "../../assets/icons/icon-étoile(vide).svg";
 import stars5 from "../../assets/icons/5-stars.svg";
@@ -21,6 +20,7 @@ import stars05 from "../../assets/icons/0.5-stars.svg";
 import moins from "../../assets/icons/moins.svg";
 import plus from "../../assets/icons/plus.svg";
 import ModalAddPanier from "../../components/Modals/modal_add_panier";
+import ModalVerifAdd from "../../components/Modals/modal_verif_add";
 import { CustomCheckbox } from "../../components/Checkbox/CustomCheckbox";
 import TabProduit from "../../components/Tabs/tabProduit";
 import { useParams } from "react-router-dom";
@@ -33,6 +33,7 @@ export default function Produits() {
   const [quantity, setQuantity] = useState(1);
   const [token, setToken] = useState(null);
   const [showModalAdd, setShowModalAdd] = useState(false);
+  const [showModalVerif, setShowModalVerif] = useState(false);
   const [affinageSelected, setAffinageSelected] = useState("");
   const [enrobageSelected, setEnrobageSelected] = useState([]);
   const [affinageOptions, setAffinageOptions] = useState([]);
@@ -48,13 +49,50 @@ export default function Produits() {
   }, []);
 
   const handleButtonClick = () => {
-    if (!affinageSelected || enrobageSelected.length === 0) {
-      alert(
-        "Veuillez sélectionner un affinage et un enrobage avant d'ajouter au panier."
+    // Vérifiez si le produit a des options d'affinage ou d'enrobage
+    const hasAffinage = affinageOptions.length > 0;
+    const hasEnrobage = enrobageOptions.length > 0;
+
+    // Si le produit n'a pas d'affinage et d'enrobage, on l'ajoute directement au panier
+    if (
+      (!hasAffinage || affinageSelected) &&
+      (!hasEnrobage || enrobageSelected.length > 0)
+    ) {
+      const item = {
+        id: product.id,
+        nom: product.nom,
+        image: product.id_image?.url,
+        quantity: quantity,
+        affinage: affinageSelected,
+        enrobage: enrobageSelected
+          .map(
+            (id) =>
+              enrobageOptions.find((option) => option.id === id)?.nom_enrobage
+          )
+          .join(", "),
+        prix: currentPrice,
+      };
+
+      // Vérifiez si le produit est déjà dans le panier
+      const existingItemIndex = panier.findIndex(
+        (p) =>
+          p.id === item.id &&
+          p.affinage === item.affinage &&
+          p.enrobage === item.enrobage
       );
-      return;
+
+      if (existingItemIndex !== -1) {
+        // Si l'article est déjà dans le panier, on affiche la modal de vérification
+        setShowModalVerif(true);
+      } else {
+        // Sinon, on ajoute l'article au panier
+        addToCart();
+      }
+    } else {
+      alert(
+        "Veuillez sélectionner un affinage et/ou un enrobage avant d'ajouter au panier."
+      );
     }
-    addToCart();
   };
 
   const closeModalAdd = () => setShowModalAdd(false);
@@ -153,16 +191,85 @@ export default function Produits() {
     const item = {
       id: product.id,
       nom: product.nom,
+      image: product.id_image?.url,
       quantity: quantity,
       affinage: affinageSelected,
-      enrobage: enrobageSelected,
+      enrobage: enrobageSelected
+        .map(
+          (id) =>
+            enrobageOptions.find((option) => option.id === id)?.nom_enrobage
+        )
+        .join(", "),
       prix: currentPrice,
     };
 
-    setPanier((prevPanier) => [...prevPanier, item]);
+    // Vérifiez si le produit est déjà dans le panier
+    const existingItemIndex = panier.findIndex(
+      (p) =>
+        p.id === item.id &&
+        p.affinage === item.affinage &&
+        p.enrobage === item.enrobage
+    );
 
-    localStorage.setItem("panier", JSON.stringify([...panier, item]));
+    if (existingItemIndex !== -1) {
+      // Si l'article est déjà dans le panier, on met à jour la quantité
+      const updatedPanier = [...panier];
+      updatedPanier[existingItemIndex].quantity += item.quantity; // Ajoute la quantité au produit existant
+      setPanier(updatedPanier);
+      localStorage.setItem("panier", JSON.stringify(updatedPanier));
 
+      // Affiche la modale de vérification
+      setShowModalVerif(true);
+    } else {
+      // Sinon, on ajoute l'article au panier
+      const newPanier = [...panier, item];
+      setPanier(newPanier);
+      localStorage.setItem("panier", JSON.stringify(newPanier));
+
+      // Affiche la modale d'ajout
+      setShowModalAdd(true);
+    }
+  };
+
+  const handleConfirmAddToCart = () => {
+    const item = {
+      id: product.id,
+      nom: product.nom,
+      image: product.id_image?.url,
+      quantity: quantity,
+      affinage: affinageSelected,
+      enrobage: enrobageSelected
+        .map(
+          (id) =>
+            enrobageOptions.find((option) => option.id === id)?.nom_enrobage
+        )
+        .join(", "),
+      prix: currentPrice,
+    };
+
+    // Vérifiez si le produit est déjà dans le panier
+    const existingItemIndex = panier.findIndex(
+      (p) =>
+        p.id === item.id &&
+        p.affinage === item.affinage &&
+        p.enrobage === item.enrobage
+    );
+
+    if (existingItemIndex !== -1) {
+      // Si l'article est déjà dans le panier, on met à jour la quantité
+      const updatedPanier = [...panier];
+      updatedPanier[existingItemIndex].quantity += item.quantity; // Ajoute la quantité au produit existant
+      setPanier(updatedPanier);
+      localStorage.setItem("panier", JSON.stringify(updatedPanier));
+    } else {
+      // Sinon, on ajoute l'article au panier
+      const newPanier = [...panier, item];
+      setPanier(newPanier);
+      localStorage.setItem("panier", JSON.stringify(newPanier));
+    }
+
+    // Fermer la modal de vérification et ouvrir la modal d'ajout
+    setShowModalVerif(false);
     setShowModalAdd(true);
   };
 
@@ -361,17 +468,49 @@ export default function Produits() {
                 </div>
                 <Button
                   className={`px-5 text-white ${
-                    !affinageSelected || enrobageSelected.length === 0
+                    (!affinageSelected && affinageOptions.length > 0) ||
+                    (enrobageSelected.length === 0 &&
+                      enrobageOptions.length > 0)
                       ? "btn-disabled"
                       : "bg-danger-600"
                   }`}
                   onClick={handleButtonClick}
-                  disabled={!affinageSelected || enrobageSelected.length === 0}
+                  disabled={
+                    (!affinageSelected && affinageOptions.length > 0) ||
+                    (enrobageSelected.length === 0 &&
+                      enrobageOptions.length > 0)
+                  }
                 >
                   Ajouter au panier
                 </Button>
 
-                {showModalAdd && <ModalAddPanier onClose={closeModalAdd} />}
+                {showModalAdd && (
+                  <ModalAddPanier
+                    onClose={closeModalAdd}
+                    item={{
+                      id: product.id,
+                      nom: product.nom,
+                      image: product.id_image?.url,
+                      quantity: quantity,
+                      affinage: affinageSelected,
+                      enrobage: enrobageSelected
+                        .map(
+                          (id) =>
+                            enrobageOptions.find((option) => option.id === id)
+                              ?.nom_enrobage
+                        )
+                        .join(", "),
+                      prix: currentPrice,
+                    }}
+                  />
+                )}
+
+                {showModalVerif && (
+                  <ModalVerifAdd
+                    onClose={() => setShowModalVerif(false)}
+                    onConfirm={handleConfirmAddToCart}
+                  />
+                )}
               </div>
             </div>
           </div>
